@@ -1,9 +1,11 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
+import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -412,7 +414,72 @@ app.get('/api/inquiries', (req, res) => {
   res.json(sorted);
 });
 
-app.post('/api/inquiries', (req, res) => {
+// Helper to send formatted inquiry email notification
+async function sendInquiryEmail(inquiry, recipientEmail) {
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const port = parseInt(process.env.SMTP_PORT || '465', 10);
+  const user = process.env.SMTP_USER?.trim();
+  const rawPass = process.env.SMTP_PASS || '';
+  const pass = rawPass.replace(/[\s\u00A0]+/g, '').trim();
+
+  if (!user || !pass || pass === 'PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE') {
+    console.log('[Email Info] SMTP credentials not set in .env. Inquiry safely saved to database.');
+    return false;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass },
+  });
+
+  const mailOptions = {
+    from: `"Indian Magician Upendra Thakur" <${user}>`,
+    to: recipientEmail || user,
+    replyTo: `"${inquiry.name}" <${inquiry.email}>`,
+    subject: `🎩 New Magic Inquiry: ${inquiry.subject} (from ${inquiry.name})`,
+    html: `
+      <div style="font-family: Arial, sans-serif; background: #050807; color: #f3f4f6; padding: 28px; border-radius: 12px; border: 1px solid #FFD700; max-width: 600px;">
+        <h2 style="color: #FFD700; margin-top: 0; font-size: 22px;">✨ New Booking Inquiry Received</h2>
+        <p style="color: #cccccc; font-size: 14px;">A new event inquiry was submitted on the website.</p>
+        <hr style="border: 0; border-top: 1px solid rgba(255,215,0,0.25); margin: 20px 0;" />
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <tr>
+            <td style="padding: 8px 0; color: #FFD700; width: 140px;"><strong>Client Name:</strong></td>
+            <td style="padding: 8px 0; color: #ffffff;">${inquiry.name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #FFD700;"><strong>Client Email:</strong></td>
+            <td style="padding: 8px 0; color: #ffffff;"><a href="mailto:${inquiry.email}" style="color: #00e599; text-decoration: none;">${inquiry.email}</a></td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #FFD700;"><strong>Subject / Event:</strong></td>
+            <td style="padding: 8px 0; color: #ffffff;">${inquiry.subject}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #FFD700; vertical-align: top;"><strong>Message:</strong></td>
+            <td style="padding: 8px 0; color: #ffffff; line-height: 1.6; white-space: pre-line;">${inquiry.message || 'No additional message provided.'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #FFD700;"><strong>Received At:</strong></td>
+            <td style="padding: 8px 0; color: #888888;">${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} (IST)</td>
+          </tr>
+        </table>
+        <hr style="border: 0; border-top: 1px solid rgba(255,215,0,0.25); margin: 20px 0;" />
+        <p style="font-size: 12px; color: #888888; margin-bottom: 0;">
+          💡 <strong>Tip:</strong> You can simply click <strong>Reply</strong> in your email app to write directly back to ${inquiry.name}.
+        </p>
+      </div>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+  console.log(`[Email Success] Notification email successfully dispatched to ${mailOptions.to}`);
+  return true;
+}
+
+app.post('/api/inquiries', async (req, res) => {
   const { name, email, subject, message } = req.body;
   if (!name || !email || !subject) {
     return res.status(400).json({ error: 'Name, email, and subject are required' });
@@ -433,8 +500,13 @@ app.post('/api/inquiries', (req, res) => {
   db.inquiries.unshift(newInquiry);
   writeDB(db);
 
+  const recipient = db.settings?.contactEmail || process.env.NOTIFICATION_EMAIL || 'indianmagician.upendra@gmail.com';
   console.log(`[Notification] New contact form submission from ${name} (${email}): "${subject}"`);
-  console.log(`[Notification] Forwarded to recipient: ${db.settings?.contactEmail || 'indianmagician.upendra@gmail.com'}`);
+
+  // Asynchronously dispatch email notification in background
+  sendInquiryEmail(newInquiry, recipient).catch(err => {
+    console.error('[Email Error] Failed to send email via SMTP:', err.message);
+  });
 
   res.status(201).json({
     success: true,

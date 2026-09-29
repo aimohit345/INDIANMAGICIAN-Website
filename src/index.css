@@ -33,6 +33,15 @@
   background: #d4af37;
 }
 
+/* Hide scrollbar on horizontal swipe carousels */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Editorial Hollow Stroke Typography */
 .text-stroke-hollow {
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.25);
@@ -127,4 +136,42 @@
 
 .animate-spin-disc {
   animation: spin 3.5s linear infinite;
+}
+
+/* Hero Name Cinematic Zoom-In Entrance Animation (Runs once on page load) */
+@keyframes heroZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.65);
+    filter: blur(8px);
+  }
+  60% {
+    opacity: 0.9;
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+.animate-hero-zoom-in {
+  animation: heroZoomIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+  will-change: transform, opacity, filter;
+}
+
+@keyframes heroSubtitleFade {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-subtitle {
+  animation: heroSubtitleFade 1s cubic-bezier(0.16, 1, 0.3, 1) 1.05s both;
 }

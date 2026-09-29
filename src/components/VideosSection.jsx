@@ -52,10 +52,6 @@ export default function VideosSection() {
         {/* ================================================================== */}
         <div className="mb-28 md:mb-36">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFD700]/10 border border-[#FFD700]/30 text-[#FFD700] text-xs font-semibold tracking-widest uppercase mb-4">
-              <Youtube className="w-3.5 h-3.5 text-red-500" />
-              <span>Broadcast & Performances</span>
-            </div>
             <h2 className="text-3xl md:text-5xl font-serif font-light text-white tracking-wide">
               YouTube Videos
             </h2>
@@ -64,13 +60,18 @@ export default function VideosSection() {
             </p>
           </div>
 
-          {/* 2x3 Grid (6 items) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {/* Mobile Swipe Indicator */}
+          <div className="flex md:hidden items-center justify-center gap-1.5 text-xs text-[#FFD700]/70 font-sans mb-4 tracking-wider">
+            <span>← Swipe to explore videos →</span>
+          </div>
+
+          {/* Responsive Layout: Swipeable horizontal rail on mobile, 2x3 grid on desktop/tablet */}
+          <div className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8 pb-4 scrollbar-none -mx-6 px-6 md:mx-0 md:px-0">
             {youtubeVideos.slice(0, 6).map((video) => (
               <div
                 key={video.id}
                 onClick={() => setActiveVideo(video)}
-                className="group relative rounded-2xl overflow-hidden glass-card-hover border border-white/10 bg-[#07130f] cursor-pointer flex flex-col"
+                className="shrink-0 w-[84vw] max-w-[340px] md:w-auto snap-center group relative rounded-2xl overflow-hidden glass-card-hover border border-white/10 bg-[#07130f] cursor-pointer flex flex-col"
               >
                 {/* Video Thumbnail with Play Button */}
                 <div className="relative aspect-video w-full overflow-hidden bg-black/40">
@@ -134,10 +135,6 @@ export default function VideosSection() {
         {/* ================================================================== */}
         <div className="mb-28 md:mb-36">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00e599]/10 border border-[#00e599]/30 text-[#00e599] text-xs font-semibold tracking-widest uppercase mb-4">
-              <Instagram className="w-3.5 h-3.5 text-[#00e599]" />
-              <span>Short-Form Magic & Sleights</span>
-            </div>
             <h2 className="text-3xl md:text-5xl font-serif font-light text-white tracking-wide">
               Instagram Reels
             </h2>
@@ -146,16 +143,21 @@ export default function VideosSection() {
             </p>
           </div>
 
-          {/* 1x3 or 1x4 Row with Samsung Galaxy S26 Phone Chassis */}
+          {/* Mobile Swipe Indicator */}
+          <div className="flex sm:hidden items-center justify-center gap-1.5 text-xs text-[#00e599]/70 font-sans mb-4 tracking-wider">
+            <span>← Swipe to explore reels →</span>
+          </div>
+
+          {/* 1x3 or 1x4 Row with Samsung Galaxy S26 Phone Chassis: Horizontal swipe on phone, grid on tablet/desktop */}
           <div
-            className={`grid gap-6 md:gap-8 ${
+            className={`flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none gap-5 sm:gap-6 md:gap-8 pb-6 pt-2 scrollbar-none -mx-6 px-6 sm:mx-0 sm:px-0 ${
               reelsLayout === '1x3'
-                ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-                : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+                ? 'sm:grid-cols-2 lg:grid-cols-3'
+                : 'sm:grid-cols-2 lg:grid-cols-4'
             }`}
           >
             {displayedReels.map((reel, rIdx) => (
-              <div key={reel.id || rIdx} className="relative group">
+              <div key={reel.id || rIdx} className="shrink-0 w-[240px] xs:w-[260px] sm:w-auto snap-center relative group">
                 {/* Samsung S26 Flagship Hardware Buttons (Right Spine Ergonomic Placement) */}
                 {/* Volume Rocker (Upper Right Spine: 21% - 31%) */}
                 <div 
@@ -331,17 +333,19 @@ export default function VideosSection() {
         {/* PART 3: "ABOUT INDIAN MAGICIAN" 1x3 SINGLE ROW FEATURETTE */}
         {/* ================================================================== */}
         <div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Mobile Swipe Indicator */}
+          <div className="flex md:hidden items-center justify-center gap-1.5 text-xs text-[#FFD700]/70 font-sans mb-3 tracking-wider">
+            <span>← Swipe to explore highlights →</span>
+          </div>
+
+          <div className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none md:grid-cols-3 gap-5 md:gap-8 pb-4 scrollbar-none -mx-6 px-6 md:mx-0 md:px-0">
             {highlights.map((item) => (
               <div
                 key={item.id}
-                className="relative rounded-2xl p-8 glass-panel border border-[#FFD700]/20 glass-card-hover flex flex-col justify-between"
+                className="shrink-0 w-[84vw] max-w-[340px] md:w-auto snap-center relative rounded-2xl p-7 md:p-8 glass-panel border border-[#FFD700]/20 glass-card-hover flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-16 h-16 rounded-2xl bg-[#092219] border border-[#FFD700]/30 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(6,44,33,0.6)]">
-                    {getHighlightIcon(item.icon)}
-                  </div>
-                  <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.25em] text-[#FFD700]">
+                  <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.25em] text-[#FFD700] block mb-2">
                     {item.subtitle}
                   </span>
                   <h3 className="text-xl md:text-2xl font-serif text-white font-medium mt-1 mb-3">

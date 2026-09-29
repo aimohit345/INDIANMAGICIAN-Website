@@ -20,17 +20,28 @@ export default function App() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
 
-  // Modernistic, highly responsive smooth scroll without delay
+  // Modernistic smooth scroll on desktop; native 120Hz momentum scroll on phone/tablet
   useEffect(() => {
     if (isAdmin) return;
+
+    // Detect touch / mobile device - let phones and tablets use native hardware-accelerated momentum scroll
+    const isTouch =
+      typeof window !== 'undefined' &&
+      (window.matchMedia('(pointer: coarse)').matches ||
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0);
+
+    if (isTouch) {
+      // Return early on touch devices so scrolling is instantaneous without delay or artificial steps
+      return;
+    }
 
     const lenis = new Lenis({
       duration: 0.6, // Snappy & responsive (no waiting or sluggishness)
       easing: (t) => 1 - Math.pow(1 - t, 3), // Instant initial response with butter-smooth glide
       orientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.15, // Immediate reaction to mouse wheel
-      touchMultiplier: 1.2,
+      wheelMultiplier: 1.15,
       infinite: false,
     });
 

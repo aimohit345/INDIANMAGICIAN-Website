@@ -53,23 +53,23 @@ export default function HeroSection() {
           opacity: opacity,
         }}
       >
-        <div className="relative inline-block mt-24 md:mt-32">
-          {/* Layer 1: Giant Background Hollow Stroke Text */}
+        <div className="relative inline-block mt-24 md:mt-32 animate-hero-zoom-in max-w-full">
+          {/* Layer 1: Giant Background Hollow Stroke Text (Single Line) */}
           <h1
-            className="text-[14vw] md:text-[11vw] font-serif font-light tracking-[0.08em] uppercase text-stroke-hollow leading-none select-none pointer-events-none transform -translate-y-2 md:-translate-y-4"
+            className="text-[10vw] sm:text-[10vw] md:text-[9vw] lg:text-[8vw] font-serif font-light tracking-[0.06em] uppercase text-stroke-hollow leading-none select-none pointer-events-none transform -translate-y-2 md:-translate-y-4 whitespace-nowrap"
             aria-hidden="true"
           >
             {heroTitle}
           </h1>
 
-          {/* Layer 2: Overlapping Solid White Editorial Serif Text */}
-          <h2 className="absolute inset-0 flex items-center justify-center text-[8vw] md:text-[6.5vw] font-serif font-normal tracking-[0.15em] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
+          {/* Layer 2: Overlapping Solid White Editorial Serif Text (Single Line) */}
+          <h2 className="absolute inset-0 flex items-center justify-center text-[7vw] sm:text-[6.5vw] md:text-[5.5vw] lg:text-[5vw] font-serif font-normal tracking-[0.12em] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] whitespace-nowrap">
             {heroTitle}
           </h2>
         </div>
 
         {/* Subtitle with Emerald & Gold Accent */}
-        <div className="mt-4 md:mt-6 flex items-center gap-3">
+        <div className="mt-4 md:mt-6 flex items-center gap-3 animate-hero-subtitle">
           <span className="w-8 md:w-16 h-[1px] bg-gradient-to-r from-transparent to-[#FFD700]" />
           <p className="text-xs md:text-sm font-sans tracking-[0.35em] uppercase text-[#FFD700] font-medium">
             {heroSubtitle}

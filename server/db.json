@@ -42,67 +42,59 @@
   "collage": [
     {
       "id": "c1",
-      "title": "Grand Illusion on Stage",
-      "caption": "Live performance at National Theatre, New Delhi",
-      "imageUrl": "/hero-magician.png",
-      "aspect": "tall",
+      "title": "Stage Magic & Cheering Audience",
+      "caption": "Live performance before thousands of mesmerized spectators",
+      "imageUrl": "/uploads/upload-1790674261179-21664808.png",
+      "aspect": "wide",
       "order": 1
     },
     {
       "id": "c2",
-      "title": "Levitation & Card Flourish",
-      "caption": "Corporate Gala for Fortune 500 Leaders",
-      "imageUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80",
+      "title": "Historic Theatre Auditorium",
+      "caption": "Packed house awaiting the evening of impossibility",
+      "imageUrl": "/uploads/upload-1790674265819-305225552.png",
       "aspect": "wide",
       "order": 2
     },
     {
       "id": "c3",
-      "title": "The Emerald Portal",
-      "caption": "Theatrical mentalism showcase",
-      "imageUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1000&q=80",
-      "aspect": "square",
+      "title": "Stage Soliloquy & Mentalism",
+      "caption": "Connecting with spectators in moments of pure disbelief",
+      "imageUrl": "/uploads/upload-1790674270547-6908690.png",
+      "aspect": "wide",
       "order": 3
     },
     {
       "id": "c4",
-      "title": "Sleight of Hand Close-Up",
-      "caption": "Pure dexterity with King of Diamonds",
-      "imageUrl": "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=1000&q=80",
-      "aspect": "tall",
+      "title": "Grand Theatrical Production",
+      "caption": "World-class lighting and theatrical staging",
+      "imageUrl": "/uploads/upload-1790674289267-58949143.png",
+      "aspect": "wide",
       "order": 4
     },
     {
       "id": "c5",
-      "title": "Mind Reading & Telepathy",
-      "caption": "Psychological illusions before a live audience",
-      "imageUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1000&q=80",
+      "title": "Standing Ovation & Acclaim",
+      "caption": "Audiences on their feet after the grand finale",
+      "imageUrl": "/uploads/upload-1790674295985-189813881.png",
       "aspect": "wide",
       "order": 5
     },
     {
       "id": "c6",
-      "title": "Smoke & Mystery",
-      "caption": "The signature emerald smoke finale",
-      "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
-      "aspect": "square",
+      "title": "Close-Up Dexterity on Stage",
+      "caption": "Intimate sleight of hand projected live on big screens",
+      "imageUrl": "/uploads/upload-1790674301733-211895828.png",
+      "aspect": "wide",
       "order": 6
     },
     {
       "id": "c7",
-      "title": "The Golden Deck",
-      "caption": "Precision card manipulation",
-      "imageUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1000&q=80",
-      "aspect": "tall",
-      "order": 7
-    },
-    {
-      "id": "c8",
-      "title": "Standing Ovation",
-      "caption": "World Magic Conclave International Showcase",
-      "imageUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1000&q=80",
+      "title": "Curtain Call & Applause",
+      "caption": "Three decades of unforgettable memories crafted on stage",
+      "imageUrl": "/uploads/upload-1790674306781-710524523.png",
       "aspect": "wide",
-      "order": 8
+      "order": 7
     }
   ],
   "testimonials": [
@@ -400,7 +392,7 @@
     {
       "id": "sec-awards",
       "title": "Prestigious Honors & Accolades",
-      "subtitle": "Recognitions from World Magic Bodies",
+      "subtitle": "",
       "layout": "grid",
       "content": "Awarded the 'Rashtriya Jadu Ratna' (National Jewel of Magic), Life Fellowship of International Magicians Society, and Best Corporate Illusionist of the Decade.",
       "cards": [
@@ -451,6 +443,42 @@
     }
   ],
   "inquiries": [
+    {
+      "id": "inq_1790683804276",
+      "name": "name1",
+      "email": "name@test.com",
+      "subject": "test",
+      "message": "this",
+      "createdAt": "2026-09-29T12:10:04.276Z",
+      "read": false
+    },
+    {
+      "id": "inq_1790683743432",
+      "name": "fdffd`",
+      "email": "test@test.com",
+      "subject": "fhfhfh",
+      "message": "hfhfhf",
+      "createdAt": "2026-09-29T12:09:03.432Z",
+      "read": false
+    },
+    {
+      "id": "inq_1790683674149",
+      "name": "Upendra Verification Test",
+      "email": "test@indianmagician.com",
+      "subject": "Live Email Delivery Test",
+      "message": "Verification test: This confirms your contact form and footer form notifications are delivered immediately to your inbox.",
+      "createdAt": "2026-09-29T12:07:54.149Z",
+      "read": false
+    },
+    {
+      "id": "inq_1790683084315",
+      "name": "Live Test Verification",
+      "email": "indianmagician.upendra@gmail.com",
+      "subject": "System Verification: Live Email Delivery Test",
+      "message": "Testing automatic email delivery from Indian Magician website to Upendra Thakur inbox.",
+      "createdAt": "2026-09-29T11:58:04.315Z",
+      "read": false
+    },
     {
       "id": "inq_1790619905379",
       "name": "ssss",

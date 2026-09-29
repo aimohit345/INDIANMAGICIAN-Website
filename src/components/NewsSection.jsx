@@ -14,10 +14,6 @@ export default function NewsSection() {
     <section id="news" className="relative z-10 w-full py-28 md:py-36 px-6 md:px-12 bg-transparent">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFD700]/10 border border-[#FFD700]/30 text-[#FFD700] text-xs font-semibold tracking-widest uppercase mb-4">
-            <Newspaper className="w-3.5 h-3.5 text-[#FFD700]" />
-            <span>Press & Media Coverage</span>
-          </div>
           <h2 className="text-3xl md:text-5xl font-serif font-light text-white tracking-wide">
             In the News
           </h2>
@@ -26,12 +22,17 @@ export default function NewsSection() {
           </p>
         </div>
 
-        {/* 2x3 Grid (6 items) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Mobile Swipe Indicator */}
+        <div className="flex md:hidden items-center justify-center gap-1.5 text-xs text-[#FFD700]/70 font-sans mb-4 tracking-wider">
+          <span>← Swipe to explore headlines →</span>
+        </div>
+
+        {/* Responsive Layout: Swipeable rail on phone, 2x3 or 3x3 on tablet/desktop */}
+        <div className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8 pb-4 scrollbar-none -mx-6 px-6 md:mx-0 md:px-0">
           {homeNews.map((item) => (
             <article
               key={item.id}
-              className="group rounded-2xl overflow-hidden glass-panel border border-white/10 glass-card-hover flex flex-col justify-between"
+              className="shrink-0 w-[84vw] max-w-[340px] md:w-auto snap-center group rounded-2xl overflow-hidden glass-panel border border-white/10 glass-card-hover flex flex-col justify-between"
             >
               {/* Image or Video preview */}
               <div className="relative aspect-[16/10] overflow-hidden bg-[#091712]">

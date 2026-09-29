@@ -191,8 +191,22 @@ function FloatingKingCard() {
     }
 
     if (isMobile) {
-      scrolledX = 0;
-      scrolledY = s < 0.2 ? -0.75 : 0.05;
+      if (s < 0.2) {
+        // Hero: Centered between magician's hands
+        scrolledX = 0;
+        scrolledY = -0.76;
+        scrolledZ = 0.25;
+      } else if (s < 0.85) {
+        // Content sections: gracefully float at bottom-right edge so text is 100% readable
+        scrolledX = 0.62;
+        scrolledY = -0.80;
+        scrolledZ = 0.1;
+      } else {
+        // Footer: Center stage finale
+        scrolledX = 0;
+        scrolledY = 0.15;
+        scrolledZ = 0.25;
+      }
     }
 
     // Add continuous subtle levitation hover
@@ -205,6 +219,14 @@ function FloatingKingCard() {
     const targetRotX = scrollRotX + my * 0.25;
     const targetRotY = scrollRotY + mx * 0.35;
     const targetRotZ = scrollRotZ + Math.sin(time * 1.5) * 0.02;
+
+    // Responsive scale: compact on mobile, moderate on tablet, full on desktop
+    const targetScale = isMobile ? 0.72 : (window.innerWidth < 1024 ? 0.86 : 1.0);
+    meshRef.current.scale.set(
+      THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.1),
+      THREE.MathUtils.lerp(meshRef.current.scale.y, targetScale, 0.1),
+      THREE.MathUtils.lerp(meshRef.current.scale.z, targetScale, 0.1)
+    );
 
     // Snappy, responsive lerp with silky physics
     meshRef.current.position.x = THREE.MathUtils.lerp(meshRef.current.position.x, targetX, 0.14);
