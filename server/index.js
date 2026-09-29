@@ -416,72 +416,112 @@ app.get('/api/inquiries', (req, res) => {
 
 // Helper to send formatted inquiry email notification
 async function sendInquiryEmail(inquiry, recipientEmail) {
-  const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT || '465', 10);
+  const resendApiKey = process.env.RESEND_API_KEY?.trim();
   const user = process.env.SMTP_USER?.trim();
   const rawPass = process.env.SMTP_PASS || '';
   const pass = rawPass.replace(/[\s\u00A0]+/g, '').trim();
+  const recipient = recipientEmail || process.env.NOTIFICATION_EMAIL || user || 'indianmagician.upendra@gmail.com';
 
+  const htmlContent = `
+    <div style="font-family: Arial, sans-serif; background: #050807; color: #f3f4f6; padding: 28px; border-radius: 12px; border: 1px solid #FFD700; max-width: 600px;">
+      <h2 style="color: #FFD700; margin-top: 0; font-size: 22px;">✨ New Booking Inquiry Received</h2>
+      <p style="color: #cccccc; font-size: 14px;">A new event inquiry was submitted on the website.</p>
+      <hr style="border: 0; border-top: 1px solid rgba(255,215,0,0.25); margin: 20px 0;" />
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <tr>
+          <td style="padding: 8px 0; color: #FFD700; width: 140px;"><strong>Client Name:</strong></td>
+          <td style="padding: 8px 0; color: #ffffff;">${inquiry.name}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #FFD700;"><strong>Client Email:</strong></td>
+          <td style="padding: 8px 0; color: #ffffff;"><a href="mailto:${inquiry.email}" style="color: #00e599; text-decoration: none;">${inquiry.email}</a></td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #FFD700;"><strong>Subject / Event:</strong></td>
+          <td style="padding: 8px 0; color: #ffffff;">${inquiry.subject}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #FFD700; vertical-align: top;"><strong>Message:</strong></td>
+          <td style="padding: 8px 0; color: #ffffff; line-height: 1.6; white-space: pre-line;">${inquiry.message || 'No additional message provided.'}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #FFD700;"><strong>Received At:</strong></td>
+          <td style="padding: 8px 0; color: #888888;">${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} (IST)</td>
+        </tr>
+      </table>
+      <hr style="border: 0; border-top: 1px solid rgba(255,215,0,0.25); margin: 20px 0;" />
+      <p style="font-size: 12px; color: #888888; margin-bottom: 0;">
+        💡 <strong>Tip:</strong> You can simply click <strong>Reply</strong> in your email app to write directly back to ${inquiry.name}.
+      </p>
+    </div>
+  `;
+
+  // 1. If RESEND_API_KEY is provided, send via Resend HTTPS API (Port 443 - never blocked by cloud hosts)
+  if (resendApiKey) {
+    console.log('[Email Info] Sending notification via Resend HTTPS API...');
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Indian Magician <onboarding@resend.dev>',
+        to: [recipient],
+        reply_to: inquiry.email,
+        subject: `🎩 New Magic Inquiry: ${inquiry.subject} (from ${inquiry.name})`,
+        html: htmlContent,
+      }),
+    });
+
+    const resData = await response.json();
+    if (!response.ok) {
+      throw new Error(`Resend API error: ${resData.message || JSON.stringify(resData)}`);
+    }
+
+    console.log(`[Email Success] Notification dispatched via Resend to ${recipient}`);
+    return { success: true, provider: 'resend', id: resData.id };
+  }
+
+  // 2. Otherwise use Gmail SMTP (try Port 587 with STARTTLS first, which is standard for cloud environments)
   if (!user || !pass || pass === 'PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE') {
     console.warn('[Email Warning] SMTP credentials (SMTP_USER / SMTP_PASS) not configured in environment variables.');
     return { success: false, reason: 'Credentials not configured in environment variables' };
   }
 
-  // Use Nodemailer service preset for Gmail (most reliable across cloud hosting like Render),
-  // or custom host/port if explicitly provided and not default smtp.gmail.com
-  const transporter = nodemailer.createTransport(
-    host && host !== 'smtp.gmail.com'
-      ? { host, port, secure: port === 465, auth: { user, pass }, tls: { rejectUnauthorized: false } }
-      : { service: 'gmail', auth: { user, pass }, tls: { rejectUnauthorized: false } }
-  );
+  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+  const isSecure = smtpPort === 465;
+
+  const transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: isSecure, // false for 587 (uses STARTTLS), true for 465 (SSL)
+    auth: { user, pass },
+    connectionTimeout: 8000,
+    greetingTimeout: 8000,
+    socketTimeout: 8000,
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
 
   const mailOptions = {
     from: `"Indian Magician Upendra Thakur" <${user}>`,
-    to: recipientEmail || user,
+    to: recipient,
     replyTo: `"${inquiry.name}" <${inquiry.email}>`,
     subject: `🎩 New Magic Inquiry: ${inquiry.subject} (from ${inquiry.name})`,
-    html: `
-      <div style="font-family: Arial, sans-serif; background: #050807; color: #f3f4f6; padding: 28px; border-radius: 12px; border: 1px solid #FFD700; max-width: 600px;">
-        <h2 style="color: #FFD700; margin-top: 0; font-size: 22px;">✨ New Booking Inquiry Received</h2>
-        <p style="color: #cccccc; font-size: 14px;">A new event inquiry was submitted on the website.</p>
-        <hr style="border: 0; border-top: 1px solid rgba(255,215,0,0.25); margin: 20px 0;" />
-        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-          <tr>
-            <td style="padding: 8px 0; color: #FFD700; width: 140px;"><strong>Client Name:</strong></td>
-            <td style="padding: 8px 0; color: #ffffff;">${inquiry.name}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #FFD700;"><strong>Client Email:</strong></td>
-            <td style="padding: 8px 0; color: #ffffff;"><a href="mailto:${inquiry.email}" style="color: #00e599; text-decoration: none;">${inquiry.email}</a></td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #FFD700;"><strong>Subject / Event:</strong></td>
-            <td style="padding: 8px 0; color: #ffffff;">${inquiry.subject}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #FFD700; vertical-align: top;"><strong>Message:</strong></td>
-            <td style="padding: 8px 0; color: #ffffff; line-height: 1.6; white-space: pre-line;">${inquiry.message || 'No additional message provided.'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #FFD700;"><strong>Received At:</strong></td>
-            <td style="padding: 8px 0; color: #888888;">${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} (IST)</td>
-          </tr>
-        </table>
-        <hr style="border: 0; border-top: 1px solid rgba(255,215,0,0.25); margin: 20px 0;" />
-        <p style="font-size: 12px; color: #888888; margin-bottom: 0;">
-          💡 <strong>Tip:</strong> You can simply click <strong>Reply</strong> in your email app to write directly back to ${inquiry.name}.
-        </p>
-      </div>
-    `,
+    html: htmlContent,
   };
 
   await transporter.sendMail(mailOptions);
-  console.log(`[Email Success] Notification email successfully dispatched to ${mailOptions.to}`);
-  return { success: true };
+  console.log(`[Email Success] Notification email successfully dispatched via SMTP to ${mailOptions.to}`);
+  return { success: true, provider: 'smtp' };
 }
 
 // Diagnostic endpoint to test email configuration live on Render or locally
 app.get('/api/test-email', async (req, res) => {
+  const resendApiKey = process.env.RESEND_API_KEY?.trim();
   const user = process.env.SMTP_USER?.trim();
   const rawPass = process.env.SMTP_PASS || '';
   const pass = rawPass.replace(/[\s\u00A0]+/g, '').trim();
@@ -490,19 +530,21 @@ app.get('/api/test-email', async (req, res) => {
   const diagnostics = {
     serverTimestamp: new Date().toISOString(),
     nodeEnv: process.env.NODE_ENV || 'development',
+    resendConfigured: !!resendApiKey,
     smtpUserConfigured: !!user,
     smtpUserMasked: user ? `${user.substring(0, 4)}***@${user.split('@')[1] || ''}` : 'NOT_SET',
     smtpPassConfigured: !!pass,
     smtpPassLength: pass.length,
+    activeSmtpPort: process.env.SMTP_PORT || '587',
     recipient,
   };
 
-  if (!user || !pass) {
+  if (!resendApiKey && (!user || !pass)) {
     return res.status(500).json({
       status: 'MISSING_CREDENTIALS',
-      message: 'SMTP_USER or SMTP_PASS environment variable is missing on this server.',
+      message: 'Neither RESEND_API_KEY nor (SMTP_USER + SMTP_PASS) are configured on this server.',
       diagnostics,
-      instructions: 'Please add SMTP_USER and SMTP_PASS under Environment in your Render dashboard.',
+      instructions: 'Please configure SMTP_USER/SMTP_PASS or RESEND_API_KEY in your Render environment variables.',
     });
   }
 
@@ -514,9 +556,10 @@ app.get('/api/test-email', async (req, res) => {
       message: 'If you are reading this email, the Render email notification pipeline is working 100% perfectly!',
     };
 
-    await sendInquiryEmail(testInquiry, recipient);
+    const result = await sendInquiryEmail(testInquiry, recipient);
     return res.json({
       status: 'SUCCESS',
+      providerUsed: result.provider,
       message: `Test email successfully sent to ${recipient}!`,
       diagnostics,
     });
@@ -527,6 +570,9 @@ app.get('/api/test-email', async (req, res) => {
       errorMessage: err.message,
       errorCode: err.code || null,
       diagnostics,
+      renderNote: err.code === 'ETIMEDOUT' 
+        ? 'Render Free Web Services block standard SMTP ports (465 and 587) to prevent spam. You can bypass this instantly by adding a free RESEND_API_KEY (from resend.com) to your Render Environment variables, which sends via HTTPS port 443.'
+        : undefined,
     });
   }
 });
