@@ -1,0 +1,491 @@
+{
+  "settings": {
+    "siteTitle": "Indian Magician — Upendra Thakur",
+    "heroTitle": "UPENDRA THAKUR",
+    "heroSubtitle": "Master Illusionist & Mentalist",
+    "heroBgImage": "/hero-magician.png",
+    "brandName": "INDIAN MAGICIAN",
+    "contactEmail": "indianmagician.upendra@gmail.com",
+    "whatsappNumber": "919999995107",
+    "youtubeChannelUrl": "https://www.youtube.com/@IndianMagicianUpendra",
+    "instagramProfileUrl": "https://www.instagram.com/indianmagician_upendra",
+    "reelsLayout": "1x4",
+    "adminPassword": "magicadmin123"
+  },
+  "about": {
+    "title": "About Upendra Thakur",
+    "lead": "Performing since the age of 10 and commanding stages professionally since his early twenties, Upendra Thakur has redefined the art of Indian magic on the global stage.",
+    "bioParagraphs": [
+      "A distinguished History Honours graduate from Delhi University, Upendra Thakur brings an intellectual depth, theatrical sophistication, and razor-sharp psychological intuition to every performance. For more than three decades, he has captivated royalty, heads of state, corporate conglomerates, and audiences of millions with his spellbinding blend of classical sleight-of-hand, mind-bending mentalism, and grand stage illusions.",
+      "His distinctive style combines the regal charm of Indian heritage with the high-octane spectacle of modern world-class illusion. Whether making massive objects vanish in front of thousands or reading the thoughts of high-profile CEOs in intimate corporate galas, Upendra Thakur's artistry leaves spectators breathless.",
+      "With over 5,000 performances across 25+ countries, he continues to push the envelope of live entertainment—transforming the impossible into unforgettable memories."
+    ],
+    "stats": [
+      {
+        "label": "Years of Stage Mastery",
+        "value": "35+"
+      },
+      {
+        "label": "Worldwide Performances",
+        "value": "5,000+"
+      },
+      {
+        "label": "Countries Toured",
+        "value": "25+"
+      },
+      {
+        "label": "Spectators Amazed",
+        "value": "2.5M+"
+      }
+    ]
+  },
+  "collage": [
+    {
+      "id": "c1",
+      "title": "Grand Illusion on Stage",
+      "caption": "Live performance at National Theatre, New Delhi",
+      "imageUrl": "/hero-magician.png",
+      "aspect": "tall",
+      "order": 1
+    },
+    {
+      "id": "c2",
+      "title": "Levitation & Card Flourish",
+      "caption": "Corporate Gala for Fortune 500 Leaders",
+      "imageUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80",
+      "aspect": "wide",
+      "order": 2
+    },
+    {
+      "id": "c3",
+      "title": "The Emerald Portal",
+      "caption": "Theatrical mentalism showcase",
+      "imageUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1000&q=80",
+      "aspect": "square",
+      "order": 3
+    },
+    {
+      "id": "c4",
+      "title": "Sleight of Hand Close-Up",
+      "caption": "Pure dexterity with King of Diamonds",
+      "imageUrl": "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=1000&q=80",
+      "aspect": "tall",
+      "order": 4
+    },
+    {
+      "id": "c5",
+      "title": "Mind Reading & Telepathy",
+      "caption": "Psychological illusions before a live audience",
+      "imageUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1000&q=80",
+      "aspect": "wide",
+      "order": 5
+    },
+    {
+      "id": "c6",
+      "title": "Smoke & Mystery",
+      "caption": "The signature emerald smoke finale",
+      "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
+      "aspect": "square",
+      "order": 6
+    },
+    {
+      "id": "c7",
+      "title": "The Golden Deck",
+      "caption": "Precision card manipulation",
+      "imageUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1000&q=80",
+      "aspect": "tall",
+      "order": 7
+    },
+    {
+      "id": "c8",
+      "title": "Standing Ovation",
+      "caption": "World Magic Conclave International Showcase",
+      "imageUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1000&q=80",
+      "aspect": "wide",
+      "order": 8
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "quote": "An unforgettable evening of pure wonder. Upendra Thakur held 1,500 delegates spellbound for two hours with seamless wit and impossible miracles.",
+      "author": "Rajesh Mehta",
+      "designation": "VP Marketing, Tata Consultancy Services"
+    },
+    {
+      "id": "t2",
+      "quote": "In 20 years of organizing high-profile luxury destination weddings, I have never seen guests so mesmerized. He doesn't just do tricks; he crafts genuine memories.",
+      "author": "Sunaina Kapoor",
+      "designation": "Founder & Lead Planner, Crimson Knot Celebrations"
+    },
+    {
+      "id": "t3",
+      "quote": "Upendra's mentalism segment literally left our Board of Directors speechless. His charismatic aura and psychological mastery are peerless.",
+      "author": "Dr. Vikram Singhania",
+      "designation": "Executive Director, Reliance Global Ventures"
+    },
+    {
+      "id": "t4",
+      "quote": "A true maestro of modern stagecraft. He blends royal Indian storytelling with grand international illusion in a way no other performer can.",
+      "author": "Ananya Sen",
+      "designation": "Festival Curator, Times Cultural Conclave"
+    },
+    {
+      "id": "t5",
+      "quote": "Our annual leadership summit needed an extraordinary keynote opener. Upendra made our brand vision appear out of thin air! Absolutely electric.",
+      "author": "Karthik Swaminathan",
+      "designation": "Managing Director, Infosys APAC"
+    },
+    {
+      "id": "t6",
+      "quote": "The way he commanded a stadium full of 8,000 university students was breathtaking. He is a master psychologist and master entertainer.",
+      "author": "Prof. H. S. Oberoi",
+      "designation": "Dean of Student Affairs, Delhi University"
+    },
+    {
+      "id": "t7",
+      "quote": "Upendra Thakur's sleight of hand with cards is faster than camera shutters. His King of Diamonds routine is pure poetry in motion.",
+      "author": "Marcus Sterling",
+      "designation": "President, International Magicians Guild"
+    },
+    {
+      "id": "t8",
+      "quote": "From VIP dignitaries to children in the audience, everyone was leaning forward in disbelief. A world-class performer through and through.",
+      "author": "Shobha Deodhar",
+      "designation": "Director of Events, Taj Palace Hotels"
+    },
+    {
+      "id": "t9",
+      "quote": "The intelligence and sophistication he brings to modern mentalism sets him in a league entirely of his own. Unbelievable precision.",
+      "author": "Aditya Vohra",
+      "designation": "Partner, McKinsey & Company"
+    },
+    {
+      "id": "t10",
+      "quote": "He predicted the headline of our next morning's paper locked inside an iron box 48 hours prior. I'm still trying to figure out how it was possible.",
+      "author": "Pooja Trivedi",
+      "designation": "Senior Editor, Hindustan Express"
+    },
+    {
+      "id": "t11",
+      "quote": "Upendra Thakur is the living pride of Indian magic. Watching him perform is witnessing magic in its purest and most majestic form.",
+      "author": "Rohan Malhotra",
+      "designation": "Founder, Zenith Entertainment Group"
+    }
+  ],
+  "youtubeVideos": [
+    {
+      "id": "yt1",
+      "title": "Grand Illusion: Vanishing a Sports Car in Front of 5,000 People",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+      "duration": "12:45",
+      "views": "1.2M views",
+      "order": 1
+    },
+    {
+      "id": "yt2",
+      "title": "Shocking Mind Reading on Live National Television",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=800&q=80",
+      "duration": "08:20",
+      "views": "840K views",
+      "order": 2
+    },
+    {
+      "id": "yt3",
+      "title": "The Legendary King of Diamonds Sleight-of-Hand Routine",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=800&q=80",
+      "duration": "06:15",
+      "views": "2.4M views",
+      "order": 3
+    },
+    {
+      "id": "yt4",
+      "title": "Extreme Telepathy: Guessing Stranger's Passwords & Secrets",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80",
+      "duration": "14:10",
+      "views": "620K views",
+      "order": 4
+    },
+    {
+      "id": "yt5",
+      "title": "Magic Meets Technology: Hacking Phones with Pure Mentalism",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
+      "duration": "10:30",
+      "views": "980K views",
+      "order": 5
+    },
+    {
+      "id": "yt6",
+      "title": "Live at Siri Fort Auditorium: Full Stage Illusion Highlights",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
+      "duration": "18:05",
+      "views": "1.8M views",
+      "order": 6
+    }
+  ],
+  "instagramReels": [
+    {
+      "id": "reel1",
+      "title": "Card morphs into gold dust in slow-motion ✨",
+      "reelUrl": "https://www.instagram.com/reel/C8xyz12345/",
+      "coverUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+      "views": "450K",
+      "order": 1
+    },
+    {
+      "id": "reel2",
+      "title": "Can I read your mind through your phone screen? 🔮",
+      "reelUrl": "https://www.instagram.com/reel/C8xyz12346/",
+      "coverUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
+      "views": "890K",
+      "order": 2
+    },
+    {
+      "id": "reel3",
+      "title": "Floating wedding ring during VIP luxury reception 💍",
+      "reelUrl": "https://www.instagram.com/reel/C8xyz12347/",
+      "coverUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      "views": "1.1M",
+      "order": 3
+    },
+    {
+      "id": "reel4",
+      "title": "Backstage secret warmup with the King of Diamonds 👑",
+      "reelUrl": "https://www.instagram.com/reel/C8xyz12348/",
+      "coverUrl": "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=600&q=80",
+      "views": "620K",
+      "order": 4
+    }
+  ],
+  "highlights": [
+    {
+      "id": "h1",
+      "title": "35+ Years of Live Mastery",
+      "subtitle": "Unbroken Legacy",
+      "description": "Performing on stage since age 10, bringing three and a half decades of unparalleled stagecraft, timing, and magnetic presence.",
+      "icon": "Award"
+    },
+    {
+      "id": "h2",
+      "title": "5,000+ Worldwide Shows",
+      "subtitle": "Global Footprint",
+      "description": "From royal private banquets to stadium-scale conventions across 25+ nations, thrilling audiences across every continent.",
+      "icon": "Globe"
+    },
+    {
+      "id": "h3",
+      "title": "The Art of Pure Mentalism & Illusion",
+      "subtitle": "Psychological Sophistication",
+      "description": "Graduating with History Honours from Delhi University, blending deep intellectual scholarship with breathtaking theatrical sorcery.",
+      "icon": "Sparkles"
+    }
+  ],
+  "news": [
+    {
+      "id": "n1",
+      "headline": "Upendra Thakur Mesmerizes 10,000 Delegates at Global Leadership Summit",
+      "publication": "The Times of India",
+      "date": "March 15, 2026",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80",
+      "articleUrl": "https://timesofindia.indiatimes.com",
+      "summary": "India's premier illusionist was awarded the Standing Ovation Honor after delivering a breathtaking mentalism keynote at the annual world summit.",
+      "showOnHome": true,
+      "category": "article"
+    },
+    {
+      "id": "n2",
+      "headline": "The Science of Deception: How Upendra Thakur Outsmarts AI on Prime Time TV",
+      "publication": "Hindustan Times",
+      "date": "January 22, 2026",
+      "mediaType": "video",
+      "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "articleUrl": "https://hindustantimes.com",
+      "summary": "In an exclusive live broadcast, Thakur successfully predicted biometric pattern locks and neural AI predictions in front of a panel of scientists.",
+      "showOnHome": true,
+      "category": "video"
+    },
+    {
+      "id": "n3",
+      "headline": "Master of Wonder: Profile on Upendra Thakur's 35-Year Magical Odyssey",
+      "publication": "EventFAQS Media",
+      "date": "November 18, 2025",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80",
+      "articleUrl": "https://eventfaqs.com",
+      "summary": "How a Delhi University History graduate transformed classical Indian conjuring into high-production corporate theatre across twenty-five nations.",
+      "showOnHome": true,
+      "category": "article"
+    },
+    {
+      "id": "n4",
+      "headline": "Royal Family of Rajasthan Hosts Private Illusion Gala with Upendra Thakur",
+      "publication": "Vogue India Culture",
+      "date": "October 05, 2025",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
+      "articleUrl": "https://vogue.in",
+      "summary": "An intimate evening of mind-reading and heirloom jewelry levitations attended by prominent global dignitaries and royal family guests.",
+      "showOnHome": true,
+      "category": "photo"
+    },
+    {
+      "id": "n5",
+      "headline": "Watch: The Mind-Bending Telepathy Experiment That Stunned DD National",
+      "publication": "DD National Prime",
+      "date": "August 14, 2025",
+      "mediaType": "video",
+      "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "articleUrl": "https://youtube.com",
+      "summary": "Full video archive of the Independence Day special broadcast where Thakur revealed historical dates chosen secretly by random studio guests.",
+      "showOnHome": true,
+      "category": "video"
+    },
+    {
+      "id": "n6",
+      "headline": "Top 10 Most Influential Stage Performers in Asia: Upendra Thakur Ranks #1",
+      "publication": "Asia Entertainment Review",
+      "date": "June 30, 2025",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
+      "articleUrl": "https://asiaentertainment.org",
+      "summary": "Recognized for elevating modern illusion into an intellectual art form while headlining sold-out stadium and festival tours internationally.",
+      "showOnHome": true,
+      "category": "article"
+    },
+    {
+      "id": "n7",
+      "headline": "Behind the Scenes of the Million-Dollar Illusion: Special Feature",
+      "publication": "Filmfare Live",
+      "date": "April 12, 2025",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80",
+      "articleUrl": "https://filmfare.com",
+      "summary": "A deep dive into the engineering, psychological misdirection, and rigorous rehearsal schedule behind Upendra's stadium productions.",
+      "showOnHome": false,
+      "category": "photo"
+    },
+    {
+      "id": "n8",
+      "headline": "Corporate Wonders: How Fortune 500 Companies Use Magic for Leadership Training",
+      "publication": "Economic Times Brand Equity",
+      "date": "February 28, 2025",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=800&q=80",
+      "articleUrl": "https://economictimes.indiatimes.com",
+      "summary": "Exploring Upendra Thakur's bespoke corporate modules on intuition, perception bias, and cognitive focus for executive teams.",
+      "showOnHome": false,
+      "category": "article"
+    },
+    {
+      "id": "n9",
+      "headline": "Live Street Magic in Chandni Chowk: Upendra Astonishes Locals",
+      "publication": "Delhi Times Viral",
+      "date": "January 10, 2025",
+      "mediaType": "video",
+      "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "articleUrl": "https://youtube.com",
+      "summary": "Spontaneous close-up magic performed on the historic streets of Old Delhi generating over 5 million viral impressions in 48 hours.",
+      "showOnHome": false,
+      "category": "video"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-awards",
+      "title": "Prestigious Honors & Accolades",
+      "subtitle": "Recognitions from World Magic Bodies",
+      "layout": "grid",
+      "content": "Awarded the 'Rashtriya Jadu Ratna' (National Jewel of Magic), Life Fellowship of International Magicians Society, and Best Corporate Illusionist of the Decade.",
+      "cards": [
+        {
+          "title": "Rashtriya Jadu Ratna",
+          "desc": "Highest civic acclaim for elevating Indian magical arts globally."
+        },
+        {
+          "title": "IMS Fellowship Award",
+          "desc": "International Magicians Society distinction for sleight-of-hand mastery."
+        },
+        {
+          "title": "Corporate Entertainer of the Decade",
+          "desc": "Over 1,200 keynote illusion events for Fortune 500 giants."
+        }
+      ],
+      "enabled": true,
+      "order": 1
+    }
+  ],
+  "pages": [
+    {
+      "id": "p-corporate",
+      "slug": "corporate-shows",
+      "title": "Corporate Keynotes & Luxury Galas",
+      "heroSubtitle": "Bespoke Illusion Experiences for World-Class Brands",
+      "content": "From Fortune 500 leadership summits to luxury brand launches, Magician Upendra Thakur crafts bespoke mentalism and illusion keynotes that seamlessly weave your corporate message, product launch, or organizational vision into unforgettable theatrical spectacles.",
+      "features": [
+        "Interactive Mind Reading tailored to company themes",
+        "Spectacular CEO & Product Reveals on stage",
+        "High-energy audience participation and psychological experiments",
+        "Seamless audiovisual and technical stage integration"
+      ],
+      "showInFooter": true
+    },
+    {
+      "id": "p-weddings",
+      "slug": "luxury-weddings",
+      "title": "Destination Weddings & Private Soirées",
+      "heroSubtitle": "Intimate Sleight-of-Hand & Grand Wedding Illusions",
+      "content": "Transform your Sangeet, Cocktail Night, or Royal Wedding Reception into an enchanting realm of wonder. Upendra Thakur mingles with your guests during cocktail hours performing miraculous close-up magic, followed by an electrifying 45-minute stage illusion show.",
+      "features": [
+        "Strolling close-up sleight of hand with rings, cards & thoughts",
+        "Custom love-story mentalism dedicated to the bride & groom",
+        "Royal illusions tailored to luxury palace and beach destinations"
+      ],
+      "showInFooter": true
+    }
+  ],
+  "inquiries": [
+    {
+      "id": "inq_1790619905379",
+      "name": "ssss",
+      "email": "mohitthakur34517@gmail.com",
+      "subject": "ssss",
+      "message": "",
+      "createdAt": "2026-09-28T18:25:05.379Z",
+      "read": true
+    },
+    {
+      "id": "inq_1790619879826",
+      "name": "xsxsxsx",
+      "email": "xsxsxs@gmaiul.com",
+      "subject": "sxsxsx",
+      "message": "",
+      "createdAt": "2026-09-28T18:24:39.826Z",
+      "read": true
+    },
+    {
+      "id": "inq_1790619022706",
+      "name": "Aarav Sharma",
+      "email": "aarav@summit.org",
+      "subject": "Festival Headline Show",
+      "message": "Hello from Jaipur Festival",
+      "createdAt": "2026-09-28T18:10:22.706Z",
+      "read": true
+    },
+    {
+      "id": "inq-1",
+      "name": "Kavita Singhal",
+      "email": "kavita.singhal@luxevents.in",
+      "subject": "Booking inquiry for Annual Tech Summit in Goa",
+      "message": "Hello Upendra Ji, we are planning our annual 800-delegate tech conference in Goa on Nov 20th and would love to have you headline the evening gala.",
+      "createdAt": "2026-09-28T10:15:00.000Z",
+      "read": true
+    }
+  ]
+}

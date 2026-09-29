@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Golden Text Selection */
+::selection {
+  background-color: #FFD700 !important;
+  color: #050807 !important;
+}
+
+::-moz-selection {
+  background-color: #FFD700 !important;
+  color: #050807 !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050807;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0a3f30;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* Editorial Hollow Stroke Typography */
+.text-stroke-hollow {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.25);
+  color: transparent;
+}
+
+.text-stroke-gold {
+  -webkit-text-stroke: 1.5px rgba(255, 215, 0, 0.4);
+  color: transparent;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(5, 8, 7, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 215, 0, 0.12);
+}
+
+.glass-panel-subtle {
+  background: rgba(10, 20, 16, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card-hover {
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 215, 0, 0.35);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 153, 0.15);
+}
+
+/* Golden text gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #fff3b0 0%, #FFD700 50%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Emerald glow */
+.emerald-glow {
+  box-shadow: 0 0 50px -10px rgba(6, 44, 33, 0.8), 0 0 30px -5px rgba(0, 229, 153, 0.2);
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Instagram Reel Video Playing Simulation Animations */
+@keyframes reelProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes soundWave {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+
+@keyframes reelMarquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes cinematicPan {
+  0% { transform: scale(1.08) translate(0%, 0%); }
+  50% { transform: scale(1.16) translate(-2%, -3%); }
+  100% { transform: scale(1.12) translate(2%, 2%); }
+}
+
+.animate-reel-progress {
+  animation: reelProgress 7s linear infinite;
+}
+
+.animate-cinematic-pan {
+  animation: cinematicPan 12s ease-in-out infinite alternate;
+}
+
+.animate-spin-disc {
+  animation: spin 3.5s linear infinite;
+}
