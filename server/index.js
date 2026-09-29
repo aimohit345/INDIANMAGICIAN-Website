@@ -416,23 +416,24 @@ app.get('/api/inquiries', (req, res) => {
 
 // Helper to send formatted inquiry email notification
 async function sendInquiryEmail(inquiry, recipientEmail) {
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || '465', 10);
   const user = process.env.SMTP_USER?.trim();
   const rawPass = process.env.SMTP_PASS || '';
   const pass = rawPass.replace(/[\s\u00A0]+/g, '').trim();
 
   if (!user || !pass || pass === 'PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE') {
-    console.log('[Email Info] SMTP credentials not set in .env. Inquiry safely saved to database.');
-    return false;
+    console.warn('[Email Warning] SMTP credentials (SMTP_USER / SMTP_PASS) not configured in environment variables.');
+    return { success: false, reason: 'Credentials not configured in environment variables' };
   }
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-  });
+  // Use Nodemailer service preset for Gmail (most reliable across cloud hosting like Render),
+  // or custom host/port if explicitly provided and not default smtp.gmail.com
+  const transporter = nodemailer.createTransport(
+    host && host !== 'smtp.gmail.com'
+      ? { host, port, secure: port === 465, auth: { user, pass }, tls: { rejectUnauthorized: false } }
+      : { service: 'gmail', auth: { user, pass }, tls: { rejectUnauthorized: false } }
+  );
 
   const mailOptions = {
     from: `"Indian Magician Upendra Thakur" <${user}>`,
@@ -476,8 +477,59 @@ async function sendInquiryEmail(inquiry, recipientEmail) {
 
   await transporter.sendMail(mailOptions);
   console.log(`[Email Success] Notification email successfully dispatched to ${mailOptions.to}`);
-  return true;
+  return { success: true };
 }
+
+// Diagnostic endpoint to test email configuration live on Render or locally
+app.get('/api/test-email', async (req, res) => {
+  const user = process.env.SMTP_USER?.trim();
+  const rawPass = process.env.SMTP_PASS || '';
+  const pass = rawPass.replace(/[\s\u00A0]+/g, '').trim();
+  const recipient = process.env.NOTIFICATION_EMAIL || user || 'indianmagician.upendra@gmail.com';
+
+  const diagnostics = {
+    serverTimestamp: new Date().toISOString(),
+    nodeEnv: process.env.NODE_ENV || 'development',
+    smtpUserConfigured: !!user,
+    smtpUserMasked: user ? `${user.substring(0, 4)}***@${user.split('@')[1] || ''}` : 'NOT_SET',
+    smtpPassConfigured: !!pass,
+    smtpPassLength: pass.length,
+    recipient,
+  };
+
+  if (!user || !pass) {
+    return res.status(500).json({
+      status: 'MISSING_CREDENTIALS',
+      message: 'SMTP_USER or SMTP_PASS environment variable is missing on this server.',
+      diagnostics,
+      instructions: 'Please add SMTP_USER and SMTP_PASS under Environment in your Render dashboard.',
+    });
+  }
+
+  try {
+    const testInquiry = {
+      name: 'Diagnostic Health Check',
+      email: 'system-check@indianmagician.com',
+      subject: 'Render Server Email Test Ping',
+      message: 'If you are reading this email, the Render email notification pipeline is working 100% perfectly!',
+    };
+
+    await sendInquiryEmail(testInquiry, recipient);
+    return res.json({
+      status: 'SUCCESS',
+      message: `Test email successfully sent to ${recipient}!`,
+      diagnostics,
+    });
+  } catch (err) {
+    console.error('[Diagnostic Email Error]:', err);
+    return res.status(500).json({
+      status: 'SEND_FAILED',
+      errorMessage: err.message,
+      errorCode: err.code || null,
+      diagnostics,
+    });
+  }
+});
 
 app.post('/api/inquiries', async (req, res) => {
   const { name, email, subject, message } = req.body;
@@ -503,16 +555,26 @@ app.post('/api/inquiries', async (req, res) => {
   const recipient = db.settings?.contactEmail || process.env.NOTIFICATION_EMAIL || 'indianmagician.upendra@gmail.com';
   console.log(`[Notification] New contact form submission from ${name} (${email}): "${subject}"`);
 
-  // Asynchronously dispatch email notification in background
-  sendInquiryEmail(newInquiry, recipient).catch(err => {
+  // Attempt to dispatch email notification
+  try {
+    const emailResult = await sendInquiryEmail(newInquiry, recipient);
+    res.status(201).json({
+      success: true,
+      message: 'Your inquiry has been received with wonder! Magician Upendra Thakur will get back to you shortly.',
+      inquiry: newInquiry,
+      emailSent: emailResult.success,
+    });
+  } catch (err) {
     console.error('[Email Error] Failed to send email via SMTP:', err.message);
-  });
-
-  res.status(201).json({
-    success: true,
-    message: 'Your inquiry has been received with wonder! Magician Upendra Thakur will get back to you shortly.',
-    inquiry: newInquiry,
-  });
+    // Still return success to user since inquiry is safely stored in database, but record email status
+    res.status(201).json({
+      success: true,
+      message: 'Your inquiry has been received with wonder! Magician Upendra Thakur will get back to you shortly.',
+      inquiry: newInquiry,
+      emailSent: false,
+      emailError: err.message,
+    });
+  }
 });
 
 app.put('/api/inquiries/:id/read', (req, res) => {
