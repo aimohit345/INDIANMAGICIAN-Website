@@ -2,7 +2,8 @@
  * Centralized API client for all backend endpoints
  */
 
-const BASE_URL = '/api';
+// Support both development (localhost) and production (deployed backend)
+const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export async function fetchAllData() {
   const res = await fetch(`${BASE_URL}/all`);
