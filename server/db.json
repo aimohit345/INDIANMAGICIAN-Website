@@ -8,7 +8,7 @@
     "contactEmail": "indianmagician.upendra@gmail.com",
     "whatsappNumber": "919999995107",
     "youtubeChannelUrl": "https://www.youtube.com/@IndianMagicianUpendra",
-    "instagramProfileUrl": "https://www.instagram.com/indianmagician_upendra",
+    "instagramProfileUrl": "https://www.instagram.com/indianmagician123?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==",
     "reelsLayout": "1x4",
     "adminPassword": "magicadmin123"
   },
@@ -168,89 +168,56 @@
   "youtubeVideos": [
     {
       "id": "yt1",
-      "title": "Grand Illusion: Vanishing a Sports Car in Front of 5,000 People",
-      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
-      "duration": "12:45",
-      "views": "1.2M views",
+      "title": "MAGIC WITH MANISH PAUL",
+      "youtubeUrl": "https://youtu.be/0xbwrVvKvtM?si=kGgi3eo3dgUM15bZ",
+      "thumbnailUrl": "https://img.youtube.com/vi/0xbwrVvKvtM/maxresdefault.jpg",
       "order": 1
     },
     {
       "id": "yt2",
-      "title": "Shocking Mind Reading on Live National Television",
-      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=800&q=80",
-      "duration": "08:20",
-      "views": "840K views",
+      "title": "FORVIA HELLA CFO SPOOKED!",
+      "youtubeUrl": "https://youtu.be/58BuDjb0KKE?si=5mqI70bCRCF-VA0j",
+      "thumbnailUrl": "https://img.youtube.com/vi/58BuDjb0KKE/maxresdefault.jpg",
       "order": 2
     },
     {
       "id": "yt3",
-      "title": "The Legendary King of Diamonds Sleight-of-Hand Routine",
-      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=800&q=80",
-      "duration": "06:15",
-      "views": "2.4M views",
+      "title": "JAY BHANUSHALI AMAZED!",
+      "youtubeUrl": "https://youtu.be/cVUV09pqA98?si=3kS0MhxuDC6ZOzjO",
+      "thumbnailUrl": "https://img.youtube.com/vi/cVUV09pqA98/maxresdefault.jpg",
       "order": 3
-    },
-    {
-      "id": "yt4",
-      "title": "Extreme Telepathy: Guessing Stranger's Passwords & Secrets",
-      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80",
-      "duration": "14:10",
-      "views": "620K views",
-      "order": 4
-    },
-    {
-      "id": "yt5",
-      "title": "Magic Meets Technology: Hacking Phones with Pure Mentalism",
-      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
-      "duration": "10:30",
-      "views": "980K views",
-      "order": 5
-    },
-    {
-      "id": "yt6",
-      "title": "Live at Siri Fort Auditorium: Full Stage Illusion Highlights",
-      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "thumbnailUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
-      "duration": "18:05",
-      "views": "1.8M views",
-      "order": 6
     }
   ],
   "instagramReels": [
     {
       "id": "reel1",
-      "title": "Card morphs into gold dust in slow-motion ✨",
-      "reelUrl": "https://www.instagram.com/reel/C8xyz12345/",
-      "coverUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+      "title": "",
+      "reelUrl": "https://www.instagram.com/reel/DUitwqJE043/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==",
+      "coverUrl": "",
       "views": "450K",
       "order": 1
     },
     {
       "id": "reel2",
-      "title": "Can I read your mind through your phone screen? 🔮",
-      "reelUrl": "https://www.instagram.com/reel/C8xyz12346/",
-      "coverUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
+      "title": "",
+      "reelUrl": "https://www.instagram.com/reel/DcMAYWrzaBB/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
+      "coverUrl": "",
       "views": "890K",
       "order": 2
     },
     {
       "id": "reel3",
-      "title": "Floating wedding ring during VIP luxury reception 💍",
-      "reelUrl": "https://www.instagram.com/reel/C8xyz12347/",
-      "coverUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      "title": "",
+      "reelUrl": "https://www.instagram.com/reel/DYq3eMVTbZQ/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
+      "coverUrl": "",
       "views": "1.1M",
       "order": 3
     },
     {
       "id": "reel4",
-      "title": "Backstage secret warmup with the King of Diamonds 👑",
-      "reelUrl": "https://www.instagram.com/reel/C8xyz12348/",
-      "coverUrl": "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&w=600&q=80",
+      "title": "",
+      "reelUrl": "https://www.instagram.com/reel/DOfQBxhk90u/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
+      "coverUrl": "",
       "views": "620K",
       "order": 4
     }

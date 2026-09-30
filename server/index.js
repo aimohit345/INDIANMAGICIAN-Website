@@ -193,12 +193,20 @@ app.get('/api/videos/youtube', (req, res) => {
   res.json(sorted);
 });
 
+function getYouTubeThumbnailUrl(url) {
+  if (!url) return '';
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/i);
+  return match ? `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg` : '';
+}
+
 app.post('/api/videos/youtube', (req, res) => {
   const db = readDB();
+  const autoThumb = getYouTubeThumbnailUrl(req.body.youtubeUrl);
   const newItem = {
     id: 'yt_' + Date.now(),
     order: (db.youtubeVideos?.length || 0) + 1,
     ...req.body,
+    thumbnailUrl: autoThumb || req.body.thumbnailUrl || '',
   };
   db.youtubeVideos = db.youtubeVideos || [];
   db.youtubeVideos.push(newItem);
@@ -210,7 +218,12 @@ app.put('/api/videos/youtube/:id', (req, res) => {
   const db = readDB();
   const index = db.youtubeVideos.findIndex(v => v.id === req.params.id);
   if (index === -1) return res.status(404).json({ error: 'Video not found' });
-  db.youtubeVideos[index] = { ...db.youtubeVideos[index], ...req.body };
+  const autoThumb = req.body.youtubeUrl ? getYouTubeThumbnailUrl(req.body.youtubeUrl) : null;
+  db.youtubeVideos[index] = {
+    ...db.youtubeVideos[index],
+    ...req.body,
+    ...(autoThumb ? { thumbnailUrl: autoThumb } : {}),
+  };
   writeDB(db);
   res.json(db.youtubeVideos[index]);
 });
@@ -252,6 +265,57 @@ app.put('/api/videos/reels/:id', (req, res) => {
   db.instagramReels[index] = { ...db.instagramReels[index], ...req.body };
   writeDB(db);
   res.json(db.instagramReels[index]);
+});
+
+// In-memory cache for resolved Instagram video MP4 URLs (valid for 2 hours)
+const instagramVideoCache = new Map();
+
+async function fetchInstagramVideoUrl(urlOrId) {
+  try {
+    const match = (urlOrId || '').match(/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/i);
+    const id = match ? match[1] : urlOrId;
+    if (!id) return null;
+
+    // Check cache
+    const cached = instagramVideoCache.get(id);
+    if (cached && Date.now() - cached.timestamp < 2 * 60 * 60 * 1000) {
+      return cached.videoUrl;
+    }
+
+    const res = await fetch(`https://www.instagram.com/reel/${id}/embed/`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9'
+      }
+    });
+    const html = await res.text();
+    const idx = html.indexOf('.mp4');
+    if (idx !== -1) {
+      const start = html.lastIndexOf('https:', idx);
+      const end = html.indexOf('"', idx);
+      const raw = html.slice(start, end);
+      const clean = raw.split('\\/').join('/').split('\\u0026').join('&').split('\\').join('');
+      instagramVideoCache.set(id, { videoUrl: clean, timestamp: Date.now() });
+      return clean;
+    }
+  } catch (err) {
+    console.error('Error extracting Instagram MP4:', err.message);
+  }
+  return null;
+}
+
+// Live Streaming Endpoint for Full-Screen Reels in Live Gallery
+app.get('/api/instagram/video', async (req, res) => {
+  const { id, url } = req.query;
+  const targetId = id || (url ? ((url.match(/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/i) || [])[1]) : null);
+  if (!targetId) return res.status(400).send('No Reel ID provided');
+
+  const videoUrl = await fetchInstagramVideoUrl(targetId);
+  if (videoUrl) {
+    return res.redirect(videoUrl);
+  }
+  return res.status(404).send('Instagram video stream not found');
 });
 
 app.delete('/api/videos/reels/:id', (req, res) => {

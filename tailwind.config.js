@@ -27,9 +27,10 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        display: ['"Syne"', 'sans-serif'],
-        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        poppins: ['"Poppins"', 'sans-serif'],
+        sans: ['"Poppins"', 'sans-serif'],
+        serif: ['"Poppins"', 'sans-serif'],
+        display: ['"Poppins"', 'sans-serif'],
       },
       animation: {
         'spin-slow': 'spin 20s linear infinite',

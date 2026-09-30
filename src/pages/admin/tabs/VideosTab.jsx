@@ -35,15 +35,19 @@ export default function VideosTab() {
   // Sub-tabs: 'youtube', 'reels', 'highlights'
   const [subTab, setSubTab] = useState('youtube');
 
+  // Helper to extract YouTube ID
+  const extractYouTubeId = (url) => {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/i);
+    return match ? match[1] : null;
+  };
+
   // YouTube modal state
   const [ytModalOpen, setYtModalOpen] = useState(false);
   const [editingYt, setEditingYt] = useState(null);
   const [ytForm, setYtForm] = useState({
     title: '',
     youtubeUrl: '',
-    thumbnailUrl: '',
-    duration: '',
-    views: '',
     order: 1,
   });
 
@@ -81,9 +85,6 @@ export default function VideosTab() {
     setYtForm({
       title: '',
       youtubeUrl: '',
-      thumbnailUrl: '',
-      duration: '',
-      views: '',
       order: youtubeVideos.length + 1,
     });
     setYtModalOpen(true);
@@ -91,21 +92,26 @@ export default function VideosTab() {
 
   const openEditYt = (v) => {
     setEditingYt(v);
-    setYtForm(v);
+    setYtForm({
+      title: v.title || '',
+      youtubeUrl: v.youtubeUrl || '',
+      order: v.order || (youtubeVideos.length + 1),
+    });
     setYtModalOpen(true);
   };
 
   const handleSaveYt = async (e) => {
     e.preventDefault();
     try {
-      // Auto-extract thumbnail if empty
-      let thumb = ytForm.thumbnailUrl;
-      if (!thumb && ytForm.youtubeUrl.includes('youtube.com/watch?v=')) {
-        const vid = ytForm.youtubeUrl.split('v=')[1]?.split('&')[0];
-        thumb = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
-      }
+      const vid = extractYouTubeId(ytForm.youtubeUrl);
+      const thumb = vid ? `https://img.youtube.com/vi/${vid}/maxresdefault.jpg` : '';
 
-      const payload = { ...ytForm, thumbnailUrl: thumb || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80' };
+      const payload = {
+        title: ytForm.title,
+        youtubeUrl: ytForm.youtubeUrl,
+        thumbnailUrl: thumb,
+        order: ytForm.order || (editingYt ? editingYt.order : youtubeVideos.length + 1),
+      };
 
       if (editingYt) {
         await updateYoutubeVideo(editingYt.id, payload);
@@ -147,6 +153,24 @@ export default function VideosTab() {
     setEditingReel(r);
     setReelForm(r);
     setReelModalOpen(true);
+  };
+
+  const handleReelMediaUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploading(true);
+      const res = await uploadImageFile(file);
+      if (res.success) {
+        setReelForm((prev) => ({ ...prev, coverUrl: res.url }));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to upload media file.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSaveReel = async (e) => {
@@ -255,39 +279,53 @@ export default function VideosTab() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {youtubeVideos.map((item) => (
-              <div
-                key={item.id}
-                className="rounded-2xl bg-[#091712] border border-white/10 overflow-hidden flex flex-col justify-between"
-              >
-                <div className="relative aspect-video w-full overflow-hidden bg-black/40">
-                  <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
-                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/70 text-[10px] text-[#FFD700] font-mono">
-                    #{item.order}
-                  </span>
-                </div>
-                <div className="p-4 flex-1 flex flex-col justify-between">
-                  <h4 className="text-white text-sm font-medium line-clamp-2">{item.title}</h4>
-                  <div className="flex items-center justify-between text-xs text-white/50 mt-3 pt-2 border-t border-white/5">
-                    <span>{item.views || 'Video'}</span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => openEditYt(item)}
-                        className="p-1.5 rounded-lg bg-white/5 text-white/80 hover:text-[#FFD700]"
-                      >
-                        <Edit2 className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteYt(item.id)}
-                        className="p-1.5 rounded-lg bg-red-950/30 text-red-400 hover:text-red-300"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+            {youtubeVideos.map((item) => {
+              const vid = extractYouTubeId(item.youtubeUrl);
+              const thumbSrc = vid ? `https://img.youtube.com/vi/${vid}/maxresdefault.jpg` : (item.thumbnailUrl || '');
+              return (
+                <div
+                  key={item.id}
+                  className="rounded-2xl bg-[#091712] border border-white/10 overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="relative aspect-video w-full overflow-hidden bg-black/40">
+                    <img
+                      src={thumbSrc}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        if (e.target.src.includes('maxresdefault.jpg')) {
+                          e.target.src = e.target.src.replace('maxresdefault.jpg', 'hqdefault.jpg');
+                        }
+                      }}
+                    />
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/70 text-[10px] text-[#FFD700] font-mono">
+                      #{item.order}
+                    </span>
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <h4 className="text-white text-sm font-medium line-clamp-2">{item.title}</h4>
+                    <div className="flex items-center justify-end text-xs text-white/50 mt-3 pt-2 border-t border-white/5">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => openEditYt(item)}
+                          className="p-1.5 rounded-lg bg-white/5 text-white/80 hover:text-[#FFD700]"
+                          title="Edit Video"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteYt(item.id)}
+                          className="p-1.5 rounded-lg bg-red-950/30 text-red-400 hover:text-red-300"
+                          title="Delete Video"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -473,7 +511,7 @@ export default function VideosTab() {
           <div className="w-full max-w-lg glass-panel rounded-2xl p-6 border border-[#FFD700]/30 shadow-2xl relative">
             <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
               <h3 className="text-lg font-serif text-white">
-                {editingYt ? 'Edit YouTube Video' : 'Add YouTube Video to Grid'}
+                {editingYt ? 'Edit YouTube Video' : 'Add YouTube Video'}
               </h3>
               <button onClick={() => setYtModalOpen(false)} className="text-white/60 hover:text-white">
                 <X className="w-5 h-5" />
@@ -483,7 +521,24 @@ export default function VideosTab() {
             <form onSubmit={handleSaveYt} className="space-y-4">
               <div>
                 <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
-                  Video Headline / Title
+                  YouTube Video Link
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={ytForm.youtubeUrl}
+                  onChange={(e) => setYtForm({ ...ytForm, youtubeUrl: e.target.value })}
+                  placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                  className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
+                />
+                <p className="text-[11px] text-white/50 mt-1">
+                  Paste the YouTube video link. The thumbnail will be automatically picked.
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
+                  Title
                 </label>
                 <input
                   type="text"
@@ -495,60 +550,29 @@ export default function VideosTab() {
                 />
               </div>
 
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
-                  YouTube Video URL
-                </label>
-                <input
-                  type="url"
-                  required
-                  value={ytForm.youtubeUrl}
-                  onChange={(e) => setYtForm({ ...ytForm, youtubeUrl: e.target.value })}
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
-                  Thumbnail Image URL (Optional - auto-generated if blank)
-                </label>
-                <input
-                  type="text"
-                  value={ytForm.thumbnailUrl}
-                  onChange={(e) => setYtForm({ ...ytForm, thumbnailUrl: e.target.value })}
-                  placeholder="https://... or leave empty to auto-extract"
-                  className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
-                    Duration Tag
-                  </label>
-                  <input
-                    type="text"
-                    value={ytForm.duration}
-                    onChange={(e) => setYtForm({ ...ytForm, duration: e.target.value })}
-                    placeholder="e.g. 12:45"
-                    className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
-                    Views Display
-                  </label>
-                  <input
-                    type="text"
-                    value={ytForm.views}
-                    onChange={(e) => setYtForm({ ...ytForm, views: e.target.value })}
-                    placeholder="e.g. 1.2M views"
-                    className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
-                  />
-                </div>
-              </div>
+              {/* Live Auto-Picked Thumbnail Preview */}
+              {(() => {
+                const vid = extractYouTubeId(ytForm.youtubeUrl);
+                return vid ? (
+                  <div className="pt-2 text-center">
+                    <span className="block text-[11px] uppercase tracking-wider text-[#FFD700] mb-2 font-semibold">
+                      Auto-Picked Thumbnail
+                    </span>
+                    <div className="w-full aspect-video rounded-xl bg-black border border-white/20 overflow-hidden relative shadow-lg">
+                      <img
+                        src={`https://img.youtube.com/vi/${vid}/maxresdefault.jpg`}
+                        alt="Thumbnail Preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          if (e.target.src.includes('maxresdefault.jpg')) {
+                            e.target.src = e.target.src.replace('maxresdefault.jpg', 'hqdefault.jpg');
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : null;
+              })()}
 
               <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
                 <button
@@ -585,59 +609,59 @@ export default function VideosTab() {
 
             <form onSubmit={handleSaveReel} className="space-y-4">
               <div>
-                <label className="block text-xs uppercase tracking-wider text-[#00e599] font-semibold mb-1">
-                  Reel Caption / Title
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={reelForm.title}
-                  onChange={(e) => setReelForm({ ...reelForm, title: e.target.value })}
-                  placeholder="e.g. Card morphs into gold dust in slow-motion ✨"
-                  className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-[#00e599] font-semibold mb-1">
-                  Instagram Reel URL
+                <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
+                  Instagram Reel Link
                 </label>
                 <input
                   type="url"
                   required
                   value={reelForm.reelUrl}
-                  onChange={(e) => setReelForm({ ...reelForm, reelUrl: e.target.value })}
+                  onChange={(e) => setReelForm({ ...reelForm, reelUrl: e.target.value, coverUrl: '' })}
                   placeholder="https://www.instagram.com/reel/..."
                   className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
                 />
+                <p className="text-[11px] text-white/50 mt-1">
+                  Paste the copied Instagram Reel link. The video will automatically load and play in the live gallery.
+                </p>
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-[#00e599] font-semibold mb-1">
-                  Cover Image URL (9:16 Vertical)
+                <label className="block text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-1">
+                  Title / Label (Optional)
                 </label>
                 <input
                   type="text"
-                  required
-                  value={reelForm.coverUrl}
-                  onChange={(e) => setReelForm({ ...reelForm, coverUrl: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
+                  value={reelForm.title || ''}
+                  onChange={(e) => setReelForm({ ...reelForm, title: e.target.value })}
+                  placeholder="e.g. Stage Mind Reading Highlight"
                   className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-[#00e599] font-semibold mb-1">
-                  Views Tag
-                </label>
-                <input
-                  type="text"
-                  value={reelForm.views}
-                  onChange={(e) => setReelForm({ ...reelForm, views: e.target.value })}
-                  placeholder="e.g. 450K"
-                  className="w-full px-3 py-2 rounded-xl bg-[#091712] border border-white/10 text-white text-sm"
-                />
-              </div>
+              {/* Live Mini Phone Preview */}
+              {(() => {
+                const match = (reelForm.reelUrl || '').match(/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/i);
+                const id = match ? match[1] : null;
+                const type = (reelForm.reelUrl || '').includes('/p/') ? 'p' : 'reel';
+
+                return id ? (
+                  <div className="pt-2 text-center">
+                    <span className="block text-[11px] uppercase tracking-wider text-white/60 mb-2 font-semibold">
+                      Live Video Preview
+                    </span>
+                    <div className="w-36 aspect-[9/16] rounded-2xl bg-black border-2 border-[#2f463c] overflow-hidden relative shadow-2xl mx-auto">
+                      <iframe
+                        src={`https://www.instagram.com/${type}/${id}/embed/`}
+                        title="Reel Preview"
+                        className="w-full h-full border-0 bg-black"
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                        allowFullScreen
+                        scrolling="no"
+                      />
+                    </div>
+                  </div>
+                ) : null;
+              })()}
 
               <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
                 <button

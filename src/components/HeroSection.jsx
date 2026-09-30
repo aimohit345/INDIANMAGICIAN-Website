@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSiteData } from '../context/SiteDataContext';
-import { ChevronDown, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export default function HeroSection() {
   const { data } = useSiteData();
@@ -54,39 +54,27 @@ export default function HeroSection() {
         }}
       >
         <div className="relative inline-block mt-24 md:mt-32 animate-hero-zoom-in max-w-full">
-          {/* Layer 1: Giant Background Hollow Stroke Text (Single Line) */}
-          <h1
-            className="text-[10vw] sm:text-[10vw] md:text-[9vw] lg:text-[8vw] font-serif font-light tracking-[0.06em] uppercase text-stroke-hollow leading-none select-none pointer-events-none transform -translate-y-2 md:-translate-y-4 whitespace-nowrap"
+          {/* Atmospheric Contrast Shield: Soft dark radial vignette directly behind text so spinning 3D card never obscures legibility */}
+          <div
+            className="absolute -inset-x-16 sm:-inset-x-24 -inset-y-10 bg-[radial-gradient(ellipse_at_center,rgba(5,8,7,0.88)_0%,rgba(5,8,7,0.5)_50%,transparent_75%)] pointer-events-none -z-10 rounded-full blur-md"
             aria-hidden="true"
-          >
+          />
+
+          {/* Luminous Title: High-Contrast Metallic Champagne-Gold Gradient with Cinematic Shadows in Poppins */}
+          <h1 className="text-[8vw] sm:text-[7.5vw] md:text-[6.2vw] lg:text-[5.4vw] font-extrabold tracking-[0.12em] sm:tracking-[0.16em] uppercase leading-none whitespace-nowrap bg-gradient-to-b from-white via-[#FFF5D0] to-[#E6BA40] bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,1)] drop-shadow-[0_6px_20px_rgba(0,0,0,0.95)] drop-shadow-[0_14px_36px_rgba(0,0,0,0.9)] filter select-none">
             {heroTitle}
           </h1>
-
-          {/* Layer 2: Overlapping Solid White Editorial Serif Text (Single Line) */}
-          <h2 className="absolute inset-0 flex items-center justify-center text-[7vw] sm:text-[6.5vw] md:text-[5.5vw] lg:text-[5vw] font-serif font-normal tracking-[0.12em] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] whitespace-nowrap">
-            {heroTitle}
-          </h2>
         </div>
 
-        {/* Subtitle with Emerald & Gold Accent */}
+        {/* Subtitle with Emerald & Gold Accent and Shadow Shield */}
         <div className="mt-4 md:mt-6 flex items-center gap-3 animate-hero-subtitle">
-          <span className="w-8 md:w-16 h-[1px] bg-gradient-to-r from-transparent to-[#FFD700]" />
-          <p className="text-xs md:text-sm font-sans tracking-[0.35em] uppercase text-[#FFD700] font-medium">
+          <span className="w-8 sm:w-16 h-[1.5px] bg-gradient-to-r from-transparent via-[#FFD700]/70 to-[#FFD700]" />
+          <p className="text-xs sm:text-sm font-semibold tracking-[0.32em] sm:tracking-[0.4em] uppercase text-[#FFD700] drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
             {heroSubtitle}
           </p>
-          <span className="w-8 md:w-16 h-[1px] bg-gradient-to-l from-transparent to-[#FFD700]" />
+          <span className="w-8 sm:w-16 h-[1.5px] bg-gradient-to-l from-transparent via-[#FFD700]/70 to-[#FFD700]" />
         </div>
       </div>
-
-      {/* Floating Scroll Down Prompt */}
-      <button
-        onClick={scrollToAbout}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-white/60 hover:text-[#FFD700] transition-colors group cursor-pointer"
-        aria-label="Scroll to About section"
-      >
-        <span className="text-[10px] tracking-[0.3em] uppercase font-sans">DISCOVER</span>
-        <ChevronDown className="w-4 h-4 animate-bounce text-[#FFD700]" />
-      </button>
     </section>
   );
 }

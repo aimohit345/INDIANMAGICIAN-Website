@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSiteData } from '../context/SiteDataContext';
-import { Play, Instagram, ExternalLink, Award, Globe, Sparkles, X, Youtube } from 'lucide-react';
+import { Play, Instagram, ExternalLink, Award, Globe, Sparkles, X, Youtube, Volume2, VolumeX } from 'lucide-react';
 
 export default function VideosSection() {
   const { data } = useSiteData();
@@ -12,19 +12,32 @@ export default function VideosSection() {
 
   // Active YouTube video modal state
   const [activeVideo, setActiveVideo] = useState(null);
+  // Audio state for Instagram live gallery
+  const [unmutedReelId, setUnmutedReelId] = useState(null);
+
+  // Helper to extract YouTube ID
+  const extractYouTubeId = (url) => {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/i);
+    return match ? match[1] : null;
+  };
 
   // Helper for YouTube embed link
   const getEmbedUrl = (url) => {
-    if (!url) return '';
-    if (url.includes('youtube.com/watch?v=')) {
-      const videoId = url.split('v=')[1]?.split('&')[0];
+    const videoId = extractYouTubeId(url);
+    if (videoId) {
       return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
     }
-    if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1]?.split('?')[0];
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    return url || '';
+  };
+
+  // Helper to get thumbnail automatically picked from video link
+  const getYouTubeThumbnail = (video) => {
+    const videoId = extractYouTubeId(video?.youtubeUrl);
+    if (videoId) {
+      return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
     }
-    return url;
+    return video?.thumbnailUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80';
   };
 
   // Helper to map icon name to Lucide Icon
@@ -73,13 +86,18 @@ export default function VideosSection() {
                 onClick={() => setActiveVideo(video)}
                 className="shrink-0 w-[84vw] max-w-[340px] md:w-auto snap-center group relative rounded-2xl overflow-hidden glass-card-hover border border-white/10 bg-[#07130f] cursor-pointer flex flex-col"
               >
-                {/* Video Thumbnail with Play Button */}
+                {/* Video Thumbnail (auto-picked from video link) with Play Button */}
                 <div className="relative aspect-video w-full overflow-hidden bg-black/40">
                   <img
-                    src={video.thumbnailUrl}
+                    src={getYouTubeThumbnail(video)}
                     alt={video.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
+                    onError={(e) => {
+                      if (e.target.src.includes('maxresdefault.jpg')) {
+                        e.target.src = e.target.src.replace('maxresdefault.jpg', 'hqdefault.jpg');
+                      }
+                    }}
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
 
@@ -89,28 +107,13 @@ export default function VideosSection() {
                       <Play className="w-6 h-6 fill-current ml-0.5" />
                     </div>
                   </div>
-
-                  {/* Duration Tag */}
-                  {video.duration && (
-                    <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[11px] font-mono text-white/90">
-                      {video.duration}
-                    </span>
-                  )}
                 </div>
 
-                {/* Video Title & Meta */}
-                <div className="p-5 flex-1 flex flex-col justify-between">
+                {/* Video Title Below */}
+                <div className="p-5 flex-1 flex flex-col justify-center">
                   <h3 className="text-white font-serif text-lg font-medium line-clamp-2 group-hover:text-[#FFD700] transition-colors leading-snug">
                     {video.title}
                   </h3>
-                  {video.views && (
-                    <div className="mt-3 flex items-center justify-between text-xs text-white/50 font-sans">
-                      <span>{video.views}</span>
-                      <span className="flex items-center gap-1 text-[#FFD700]/80 group-hover:text-[#FFD700]">
-                        Watch Video <ExternalLink className="w-3 h-3 ml-0.5" />
-                      </span>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
@@ -131,24 +134,24 @@ export default function VideosSection() {
         </div>
 
         {/* ================================================================== */}
-        {/* PART 2: INSTAGRAM REELS (1x3 or 1x4 Single Row) */}
+        {/* PART 2: INSTAGRAM REELS (1x3 or 1x4 Single Row - Matching Suhani Shah Clean Editorial) */}
         {/* ================================================================== */}
         <div className="mb-28 md:mb-36">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-5xl font-serif font-light text-white tracking-wide">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.3em] text-[#FFD700] block mb-2">
+              WORLD'S MOST ACCLAIMED ILLUSIONIST
+            </span>
+            <h2 className="text-3xl md:text-5xl font-extrabold uppercase text-white tracking-[0.12em]">
               Instagram Reels
             </h2>
-            <p className="text-white/60 text-sm md:text-base font-sans mt-3">
-              Quick bursts of impossibility, behind-the-scenes warmups, and close-up miracle moments.
-            </p>
           </div>
 
           {/* Mobile Swipe Indicator */}
-          <div className="flex sm:hidden items-center justify-center gap-1.5 text-xs text-[#00e599]/70 font-sans mb-4 tracking-wider">
+          <div className="flex sm:hidden items-center justify-center gap-1.5 text-xs text-[#FFD700]/70 font-sans mb-4 tracking-wider">
             <span>← Swipe to explore reels →</span>
           </div>
 
-          {/* 1x3 or 1x4 Row with Samsung Galaxy S26 Phone Chassis: Horizontal swipe on phone, grid on tablet/desktop */}
+          {/* 1x3 or 1x4 Row with Samsung Galaxy Phone Chassis: Horizontal swipe on phone, grid on tablet/desktop */}
           <div
             className={`flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none gap-5 sm:gap-6 md:gap-8 pb-6 pt-2 scrollbar-none -mx-6 px-6 sm:mx-0 sm:px-0 ${
               reelsLayout === '1x3'
@@ -156,175 +159,100 @@ export default function VideosSection() {
                 : 'sm:grid-cols-2 lg:grid-cols-4'
             }`}
           >
-            {displayedReels.map((reel, rIdx) => (
-              <div key={reel.id || rIdx} className="shrink-0 w-[240px] xs:w-[260px] sm:w-auto snap-center relative group">
-                {/* Samsung S26 Flagship Hardware Buttons (Right Spine Ergonomic Placement) */}
-                {/* Volume Rocker (Upper Right Spine: 21% - 31%) */}
-                <div 
-                  className="absolute -right-[3.5px] top-[21%] w-[3.5px] h-[11%] min-h-[44px] max-h-[58px] bg-gradient-to-r from-[#293d35] to-[#4b6659] rounded-r-[2.5px] shadow-[1px_0_4px_rgba(0,0,0,0.7)] group-hover:from-[#00e599] group-hover:to-[#00c282] transition-all duration-300 z-20 pointer-events-none" 
-                  title="Volume Rocker"
-                />
+            {displayedReels.map((reel, rIdx) => {
+              const reelMatch = (reel.reelUrl || '').match(/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/i);
+              const reelId = reelMatch ? reelMatch[1] : ((reel.reelUrl && !reel.reelUrl.includes('/') && reel.reelUrl.trim().length > 3) ? reel.reelUrl.trim() : null);
+              const targetUrl = (reel.reelUrl && reel.reelUrl.startsWith('http'))
+                ? reel.reelUrl
+                : (reelId ? `https://www.instagram.com/reel/${reelId}/` : (settings.instagramProfileUrl || 'https://www.instagram.com/indianmagician_upendra'));
+              const isVideo = reel.coverUrl && reel.coverUrl.match(/\.(mp4|webm|mov)$/i);
 
-                {/* Power / Side Key (Middle Right Spine: 34% - 41%) */}
-                <div 
-                  className="absolute -right-[3.5px] top-[34%] w-[3.5px] h-[6.5%] min-h-[26px] max-h-[36px] bg-gradient-to-r from-[#293d35] to-[#4b6659] rounded-r-[2.5px] shadow-[1px_0_4px_rgba(0,0,0,0.7)] group-hover:from-[#00e599] group-hover:to-[#00c282] transition-all duration-300 z-20 pointer-events-none" 
-                  title="Power / Side Key"
-                />
+              return (
+                <div key={reel.id || rIdx} className="shrink-0 w-[240px] xs:w-[260px] sm:w-auto snap-center relative group">
+                  {/* Flagship Hardware Buttons (Right Spine Ergonomic Placement) */}
+                  {/* Volume Rocker (Upper Right Spine: 21% - 31%) */}
+                  <div 
+                    className="absolute -right-[3.5px] top-[21%] w-[3.5px] h-[11%] min-h-[44px] max-h-[58px] bg-gradient-to-r from-[#293d35] to-[#4b6659] rounded-r-[2.5px] shadow-[1px_0_4px_rgba(0,0,0,0.7)] group-hover:from-[#FFD700] group-hover:to-[#d4af37] transition-all duration-300 z-20 pointer-events-none" 
+                    title="Volume Rocker"
+                  />
 
-                {/* Subtle Samsung Antenna Insulator Slits */}
-                <div className="absolute -right-[2px] top-[10%] w-[2.5px] h-[3px] bg-[#14231d] rounded-r-xs z-20" />
-                <div className="absolute -right-[2px] bottom-[11%] w-[2.5px] h-[3px] bg-[#14231d] rounded-r-xs z-20" />
-                <div className="absolute -left-[2px] top-[10%] w-[2.5px] h-[3px] bg-[#14231d] rounded-l-xs z-20" />
-                <div className="absolute -left-[2px] bottom-[11%] w-[2.5px] h-[3px] bg-[#14231d] rounded-l-xs z-20" />
+                  {/* Power / Side Key (Middle Right Spine: 34% - 41%) */}
+                  <div 
+                    className="absolute -right-[3.5px] top-[34%] w-[3.5px] h-[6.5%] min-h-[26px] max-h-[36px] bg-gradient-to-r from-[#293d35] to-[#4b6659] rounded-r-[2.5px] shadow-[1px_0_4px_rgba(0,0,0,0.7)] group-hover:from-[#FFD700] group-hover:to-[#d4af37] transition-all duration-300 z-20 pointer-events-none" 
+                    title="Power / Side Key"
+                  />
 
-                {/* Outer Titanium Phone Frame */}
-                <a
-                  href={reel.reelUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative block w-full aspect-[9/18.5] rounded-[2.3rem] p-[6px] bg-gradient-to-b from-[#22352e] via-[#12201b] to-[#0c1613] border-2 border-[#2f463c] shadow-[0_16px_36px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.2)] group-hover:border-[#00e599]/70 group-hover:shadow-[0_20px_45px_rgba(0,229,153,0.3)] transition-all duration-500 overflow-hidden cursor-pointer"
-                >
-                  {/* Top Earpiece Micro-Slit */}
-                  <div className="absolute top-[2.5px] left-1/2 -translate-x-1/2 w-8 h-[2px] bg-[#1e2e27] rounded-full z-30" />
+                  {/* Antenna Insulator Slits */}
+                  <div className="absolute -right-[2px] top-[10%] w-[2.5px] h-[3px] bg-[#14231d] rounded-r-xs z-20" />
+                  <div className="absolute -right-[2px] bottom-[11%] w-[2.5px] h-[3px] bg-[#14231d] rounded-r-xs z-20" />
+                  <div className="absolute -left-[2px] top-[10%] w-[2.5px] h-[3px] bg-[#14231d] rounded-l-xs z-20" />
+                  <div className="absolute -left-[2px] bottom-[11%] w-[2.5px] h-[3px] bg-[#14231d] rounded-l-xs z-20" />
 
-                  {/* Inner OLED Display Bezel */}
-                  <div className="relative w-full h-full rounded-[1.85rem] overflow-hidden bg-black flex flex-col justify-between p-3.5 border border-black select-none">
-                    
-                    {/* Top Screen Elements: Story Progress Bar + Centered Infinity-O Camera */}
-                    <div className="relative z-30 w-full pt-1">
-                      {/* Live Looping Reel Video Timeline Progress Bar */}
-                      <div className="w-full h-[2px] bg-white/20 rounded-full overflow-hidden mb-2">
-                        <div
-                          className="h-full bg-white rounded-full animate-reel-progress"
-                          style={{
-                            animationDelay: `${rIdx * 1.5}s`,
-                          }}
-                        />
-                      </div>
+                  {/* Outer Titanium Phone Frame (Clicking anywhere opens that particular reel on Instagram) */}
+                  <a
+                    href={targetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative block w-full aspect-[9/18.5] rounded-[2.3rem] p-[6px] bg-gradient-to-b from-[#22352e] via-[#12201b] to-[#0c1613] border-2 border-[#2f463c] shadow-[0_16px_36px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:border-[#FFD700]/70 hover:shadow-[0_20px_45px_rgba(255,215,0,0.3)] transition-all duration-500 overflow-hidden cursor-pointer group"
+                    title="Watch this Reel on Instagram"
+                  >
+                    {/* Top Earpiece Micro-Slit */}
+                    <div className="absolute top-[2.5px] left-1/2 -translate-x-1/2 w-8 h-[2px] bg-[#1e2e27] rounded-full z-30 pointer-events-none" />
 
-                      {/* Centered Infinity-O Camera Hole Punch (Samsung Signature) */}
-                      <div className="mx-auto w-3 h-3 rounded-full bg-[#050807] border border-[#21322b] flex items-center justify-center shadow-inner">
-                        <div className="w-1 h-1 rounded-full bg-[#00e599]/70 animate-pulse" />
-                      </div>
-                    </div>
-
-                    {/* Subtle Screen Glare Sheen */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.05] to-transparent pointer-events-none z-20 group-hover:opacity-100 transition-opacity" />
-
-                    {/* Dynamic Simulated Live Video Playback Layer */}
-                    <div className="absolute inset-0 overflow-hidden">
-                      <img
-                        src={reel.coverUrl}
-                        alt={reel.title}
-                        className="w-full h-full object-cover animate-cinematic-pan"
-                        style={{
-                          animationDelay: `${rIdx * 2}s`,
-                        }}
-                        loading="lazy"
-                      />
-                    </div>
-
-                    {/* Live Video Dark Vignette Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/85 z-10" />
-
-                    {/* Right-Side Instagram Reel Action Rail */}
-                    <div className="absolute right-2.5 bottom-16 z-20 flex flex-col items-center gap-3.5">
-                      {/* Heart Like Button */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-red-500 transition-colors">
-                          <span className="text-sm">❤️</span>
+                    {/* Inner OLED Display Bezel */}
+                    <div className="relative w-full h-full rounded-[1.85rem] overflow-hidden bg-black border border-black select-none">
+                      
+                      {/* Top Centered Dynamic Island / Camera Punch Hole */}
+                      <div className="absolute top-1.5 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center pointer-events-none">
+                        <div className="w-12 h-2.5 bg-black rounded-full border border-white/10 flex items-center justify-end pr-1 shadow-md">
+                          <div className="w-1 h-1 rounded-full bg-[#15241d]" />
                         </div>
-                        <span className="text-[9px] font-sans font-semibold text-white/90 mt-0.5">
-                          {rIdx === 0 ? '48.2K' : rIdx === 1 ? '92.5K' : rIdx === 2 ? '114K' : '65.8K'}
-                        </span>
                       </div>
 
-                      {/* Comment Button */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white">
-                          <span className="text-sm">💬</span>
-                        </div>
-                        <span className="text-[9px] font-sans font-semibold text-white/90 mt-0.5">
-                          {rIdx === 0 ? '1.2K' : rIdx === 1 ? '2.4K' : rIdx === 2 ? '3.8K' : '890'}
-                        </span>
-                      </div>
+                      {/* Full-Screen Live Video Stream (Plays Full Screen Edge-to-Edge) */}
+                      <div className="w-full h-full overflow-hidden bg-black relative flex items-center justify-center">
+                        {reelId ? (
+                          <>
+                            <video
+                              src={`/api/instagram/video?id=${reelId}`}
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
+                            />
 
-                      {/* Share Paper Plane Button */}
-                      <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white">
-                        <span className="text-sm">↗️</span>
-                      </div>
-
-                      {/* Spinning Vinyl Music Disc */}
-                      <div className="w-7 h-7 rounded-full bg-[#111] border-2 border-white/30 flex items-center justify-center animate-spin-disc">
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#FFD700]" />
-                      </div>
-                    </div>
-
-                    {/* Bottom Playing Information & Audio Ticker */}
-                    <div className="relative z-20 pr-10">
-                      {/* Magician Avatar & Handle */}
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <img
-                          src="/hero-magician.png"
-                          alt="Upendra Thakur"
-                          className="w-5 h-5 rounded-full object-cover border border-[#FFD700]"
-                        />
-                        <span className="text-[10px] font-sans font-semibold text-white tracking-wide">
-                          indianmagician_upendra
-                        </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#00e599]" />
-                      </div>
-
-                      {/* Reel Caption */}
-                      <h4 className="text-white font-serif text-xs font-medium line-clamp-2 leading-tight drop-shadow-md mb-2">
-                        {reel.title}
-                      </h4>
-
-                      {/* Scrolling Audio Marquee & Live Equalizer */}
-                      <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-black/50 backdrop-blur-sm border border-white/10">
-                        {/* 4-bar Sound Equalizer Animating */}
-                        <div className="flex items-end gap-[1.5px] h-3 shrink-0">
-                          <span
-                            className="w-[2px] bg-[#00e599] rounded-full"
-                            style={{ animation: 'soundWave 0.8s ease-in-out infinite alternate' }}
-                          />
-                          <span
-                            className="w-[2px] bg-[#00e599] rounded-full"
-                            style={{ animation: 'soundWave 0.6s ease-in-out infinite 0.2s alternate' }}
-                          />
-                          <span
-                            className="w-[2px] bg-[#00e599] rounded-full"
-                            style={{ animation: 'soundWave 1.0s ease-in-out infinite 0.4s alternate' }}
-                          />
-                          <span
-                            className="w-[2px] bg-[#00e599] rounded-full"
-                            style={{ animation: 'soundWave 0.7s ease-in-out infinite 0.1s alternate' }}
-                          />
-                        </div>
-
-                        {/* Audio Track Name */}
-                        <span className="text-[9px] font-sans text-white/80 truncate">
-                          ♫ Upendra Thakur • Original Audio - Stage Magic
-                        </span>
+                            {/* Floating Subtle Instagram Pill on Hover */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[#FFD700] text-[10px] font-sans font-semibold tracking-wider shadow-lg whitespace-nowrap">
+                              <Instagram className="w-3 h-3 text-[#FFD700]" />
+                              <span>Watch on Instagram ↗</span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-[#07130f] text-white/40 p-4 text-center pointer-events-none">
+                            <Instagram className="w-10 h-10 text-[#FFD700]/50 mb-2" />
+                            <span className="text-[11px] font-sans tracking-widest uppercase">Instagram Reel</span>
+                            <span className="text-[9px] text-white/30 mt-1">Paste link in admin panel</span>
+                          </div>
+                        )}
                       </div>
                     </div>
-
-                  </div>
-                </a>
-              </div>
-            ))}
+                  </a>
+                </div>
+              );
+            })}
           </div>
 
-          {/* "Watch them all" Button */}
+          {/* "Watch Them All" Button (Matching Suhani Shah Clean Editorial Style) */}
           <div className="mt-14 text-center">
             <a
               href={settings.instagramProfileUrl || 'https://www.instagram.com/indianmagician_upendra'}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#071712] border border-[#00e599]/40 text-[#00e599] font-sans text-xs tracking-[0.25em] uppercase font-semibold hover:bg-[#00e599] hover:text-[#050807] hover:shadow-[0_0_25px_rgba(0,229,153,0.4)] transition-all cursor-pointer"
+              className="inline-flex items-center gap-3 px-8 py-3.5 rounded-lg bg-white text-[#050807] font-sans text-xs tracking-[0.16em] uppercase font-bold hover:bg-[#FFD700] hover:shadow-[0_0_30px_rgba(255,215,0,0.5)] transition-all cursor-pointer group"
             >
-              <Instagram className="w-4 h-4" />
-              <span>Watch them all</span>
+              <Instagram className="w-4 h-4 text-[#050807] group-hover:scale-110 transition-transform" />
+              <span>Watch Them All</span>
             </a>
           </div>
         </div>

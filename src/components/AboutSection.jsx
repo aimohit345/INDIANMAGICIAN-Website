@@ -108,16 +108,34 @@ export default function AboutSection() {
   return (
     <section id="about" className="relative z-10 w-full overflow-hidden">
       {/* ===================================================================== */}
-      {/* TOP PART: DARK EDITORIAL BIO (Matching Suhani Shah Clean Hierarchy) */}
+      {/* TOP PART: DARK EDITORIAL BIO WITH LIGHT FROSTED GLASS (Card clearly visible) */}
       {/* ===================================================================== */}
-      <div className="bg-[#050807] pt-28 md:pt-36 pb-36 md:pb-48 px-6 md:px-16 lg:px-24">
+      <div className="relative bg-[#050807]/35 backdrop-blur-sm pt-28 md:pt-36 pb-36 md:pb-48 px-6 md:px-16 lg:px-24 border-t border-white/10 shadow-[0_-25px_60px_rgba(0,0,0,0.6)]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-            {/* Left Column: UPENDRA THAKUR */}
+            {/* Left Column: ABOUT UPENDRA THAKUR */}
             <div className="lg:col-span-5">
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-white tracking-wide leading-none uppercase">
-                {about.title || 'Upendra Thakur'}
-              </h2>
+              {(() => {
+                const titleStr = (about.title || 'About Upendra Thakur').trim();
+                const match = titleStr.match(/^(about)\s*(.*)$/i);
+                if (match) {
+                  return (
+                    <h2 className="flex flex-col gap-1.5 md:gap-2 uppercase leading-none">
+                      <span className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-wide">
+                        {match[1]}
+                      </span>
+                      <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#FFD700] tracking-[0.14em]">
+                        {match[2]}
+                      </span>
+                    </h2>
+                  );
+                }
+                return (
+                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-wide leading-none uppercase">
+                    {titleStr}
+                  </h2>
+                );
+              })()}
 
               {/* Key Stats Bar */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-10 pt-8 border-t border-white/10">
@@ -254,10 +272,10 @@ export default function AboutSection() {
       </div>
 
       {/* ===================================================================== */}
-      {/* BOTTOM PART: THEMED EDITORIAL TESTIMONIALS (Obsidian & Gold Palette) */}
+      {/* BOTTOM PART: THEMED EDITORIAL TESTIMONIALS (Light Frosted Blur) */}
       {/* ===================================================================== */}
       <div
-        className="bg-gradient-to-b from-[#050807] via-[#071510] to-[#050807] text-[#f3f4f6] pt-24 md:pt-36 pb-20 md:pb-28 px-6 md:px-16 lg:px-24 border-t border-white/5 transition-colors"
+        className="relative bg-gradient-to-b from-[#050807]/30 via-[#071510]/35 to-[#050807]/40 backdrop-blur-sm text-[#f3f4f6] pt-24 md:pt-36 pb-20 md:pb-28 px-6 md:px-16 lg:px-24 border-t border-white/10 shadow-[0_-25px_60px_rgba(0,0,0,0.5)] transition-colors"
         onMouseEnter={() => setIsTestimonialPaused(true)}
         onMouseLeave={() => setIsTestimonialPaused(false)}
         onTouchStart={handleTestTouchStart}
