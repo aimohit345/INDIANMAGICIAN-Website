@@ -162,14 +162,14 @@ function FloatingKingCard() {
       scrollRotY = 0.0; // Facing front towards viewer
       scrollRotZ = 0.0;
     } else if (s < 0.5) {
-      // 2. ABOUT SECTION (Rises to right side)
+      // 2. ABOUT SECTION (Rises to right flank, visible in front of content)
       const p = (s - 0.2) / 0.3;
-      scrolledX = THREE.MathUtils.lerp(heroCenterX, 1.15, p);
-      scrolledY = THREE.MathUtils.lerp(heroCenterY, 0.2, p);
-      scrolledZ = THREE.MathUtils.lerp(heroCenterZ, 0.0, p);
-      scrollRotX = THREE.MathUtils.lerp(0.12, 0.4, p);
+      scrolledX = THREE.MathUtils.lerp(heroCenterX, isMobile ? 0.62 : 1.35, p);
+      scrolledY = THREE.MathUtils.lerp(heroCenterY, isMobile ? -0.80 : 0.15, p);
+      scrolledZ = THREE.MathUtils.lerp(heroCenterZ, 0.1, p);
+      scrollRotX = THREE.MathUtils.lerp(0.12, 0.35, p);
       scrollRotY = THREE.MathUtils.lerp(0.0, Math.PI * 1.2, p);
-      scrollRotZ = THREE.MathUtils.lerp(0.0, 0.15, p);
+      scrollRotZ = THREE.MathUtils.lerp(0.0, 0.12, p);
     } else if (s < 0.78) {
       // 3. VIDEOS SECTION (Tumbles to left flank)
       const p = (s - 0.5) / 0.28;
@@ -314,7 +314,7 @@ export default function Persistent3DCard() {
   return (
     <div
       className="fixed inset-0 pointer-events-none transition-opacity duration-700"
-      style={{ zIndex: 5 }}
+      style={{ zIndex: 35 }}
       aria-hidden="true"
     >
       <Canvas
